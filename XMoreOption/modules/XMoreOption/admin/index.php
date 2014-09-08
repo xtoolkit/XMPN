@@ -152,6 +152,26 @@ function xaitems($item1,$item2,$item12,$item13){
 <tr><td>تگ آپارات : </td><td><input name='xatag' value='<?php echo $item1; ?>' class="inp-form-ltr"></td></tr>
 <?php
 }
+function xsitems($item1,$item2,$item12,$item13){
+	global $prefix,$db,$dbname;
+?>
+<tr><td style="width:250px">جعبه صوت برای ماژول : </td><td><select name="xsmod" class="styledselect-select">
+<option value="News" <?php if($item13=="News"){ ?>selected<?php } ?>>News</option>
+<option value="Contact" disabled<?php if($item13=="Contact"){ ?>selected<?php } ?>>Contact</option>
+</select></td></tr>
+<tr><th>جعبه صوت برای مطلب : </th><td><select name="xsmid" class="styledselect-select">
+<?php	$result = $db->sql_query("SELECT * FROM `" . $prefix . "_stories` ORDER BY `" . $prefix . "_stories`.`sid` DESC LIMIT 0 , 9999");
+	while ($row = $db->sql_fetchrow($result)) {
+	mb_internal_encoding('UTF-8');
+	$sid = intval($row['sid']);
+	$title = check_html($row['title'], "nohtml");
+?><option value="<?php echo $sid; ?>" <?php if($item12==$sid){ ?>selected<?php } ?>><?php echo $title; ?></option>
+<?php } ?>
+</select></td></tr>
+<tr><td>نام فایل صوتی : </td><td><input name='xstitle' value='<?php echo $item2; ?>' class="inp-form-ltr"></td></tr>
+<tr><td>آدرس فایل صوتی : </td><td><input name='xstag' value='<?php echo $item1; ?>' class="inp-form-ltr"></td></tr>
+<?php
+}
 function gettibyb($nuim, $nim){
 global $prefix, $db, $dbname;
 if($nim=="News"){
@@ -188,6 +208,16 @@ $result = $db->sql_query("SELECT * FROM `" . $prefix . "_xaset` WHERE `xasid` =$
 }
 return $xasvalue;
 }
+function xssetv($nuim){
+global $prefix, $db, $dbname;
+$nuim=intval($nuim);
+$result = $db->sql_query("SELECT * FROM `" . $prefix . "_xsset` WHERE `xssid` =$nuim LIMIT 0 , 1");
+	while ($row = $db->sql_fetchrow($result)) {
+	mb_internal_encoding('UTF-8');
+	$xasvalue = $row['xssvalue'];
+}
+return $xasvalue;
+}
 function xlbsetedit($nuim,$xxvalue){
 global $prefix, $db, $dbname;
 $nuim=intval($nuim);
@@ -197,6 +227,11 @@ function xasetedit($nuim,$xxvalue){
 global $prefix, $db, $dbname;
 $nuim=intval($nuim);
 $db->sql_query("UPDATE `$dbname`.`" . $prefix . "_xaset` SET `xasvalue` = '$xxvalue' WHERE `" . $prefix . "_xaset`.`xasid` =$nuim;");
+}
+function xssetedit($nuim,$xxvalue){
+global $prefix, $db, $dbname;
+$nuim=intval($nuim);
+$db->sql_query("UPDATE `$dbname`.`" . $prefix . "_xsset` SET `xssvalue` = '$xxvalue' WHERE `" . $prefix . "_xsset`.`xssid` =$nuim;");
 }
 function xmoreoption() {
 	global $prefix, $db, $admin_file, $dbname, $sitename, $xset;
@@ -223,6 +258,10 @@ if($xmnvaa=="Initial3"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/f
 <div class="xmoabj <?php if($xset=="xaparat"){ ?>selected<?php } ?>">
 <a href="<?php echo $admin_file; ?>.php?op=xmoreoption&xset=xaparat" style="background-image:url(modules/XMoreOption/images/xaparat.png)"></a>
 <span>آپارات</span>
+</div>
+<div class="xmoabj <?php if($xset=="xsound"){ ?>selected<?php } ?>">
+<a href="<?php echo $admin_file; ?>.php?op=xmoreoption&xset=xsound" style="background-image:url(modules/XMoreOption/images/xsound.png)"></a>
+<span>جعبه صوت</span>
 </div>
 </div>
 <br>
@@ -389,7 +428,7 @@ LIMIT 0 , 99999");
 <tr><th style="width:250px">غیر فعال کردن جعبه های آپارات</th><td>بلی <input name="xatrue" type="radio" class="styled" value="1" <?php if(xasetv(1)==1){ ?>checked<?php } ?>> &nbsp;&nbsp; خیر <input name="xatrue" type="radio" class="styled" value="0" <?php if(xasetv(1)==0){ ?>checked<?php } ?>></td></tr>
 <tr><td>کانال آپارات شما : </td><td><input name='xacanal' value='<?php echo xasetv(3); ?>' class="inp-form-ltr"></td></tr>
 <tr><th>پوسته های جعبه نمایشی آپارات</th><td><select name="xatemp" class="styledselect-select">
-	<option value="default" titile="(باید تابع xlb_theme در theme.php وجود داشته باشد)" <?php if(xasetv(2)=="default"){ echo"selected"; } ?>>استفاده از تابع پوسته سایت </option>
+	<option value="default" titile="(باید تابع xa_theme در theme.php وجود داشته باشد)" <?php if(xasetv(2)=="default"){ echo"selected"; } ?>>استفاده از تابع پوسته سایت </option>
 <?php
 		$handle=opendir("modules/XMoreOption/theme/Xaparat/");
 		while ($file = readdir($handle)) {
@@ -443,6 +482,219 @@ LIMIT 0 , 99999");
 	طراحان پوسته نیوک می توانند با ایجاد تابع xa_theme برای theme.php خود جعبه اختصاصی تعریف کنند.</p>
 <p>
 	همچنین می توانند به صورت مسقل به نشانی modules/XMoreOption/theme/Xaparat/ برای نیوک جعبه با پوسته مستقل بسازند.</p>
+</div>
+</div>
+</div>
+</div><?php
+CloseAdminTable();
+}
+function xsound() {
+	global $prefix, $db, $admin_file, $dbname, $sitename, $xniniki, $xsmod, $xsmid, $xstag, $xsid, $xstrue, $xstemp, $xscanal, $xstitle;
+OpenAdminTable();
+$dfsdfsd = $db->sql_numrows($db->sql_query("SELECT *
+FROM `" . $prefix . "_xsset`
+LIMIT 0 , 3"));
+if($dfsdfsd>0){}else{
+$db->sql_query("CREATE TABLE IF NOT EXISTS `" . $prefix . "_xsound` (
+  `xsid` int(11) NOT NULL AUTO_INCREMENT,
+  `xsmid` int(11) NOT NULL,
+  `xsmod` text NOT NULL,
+  `xstitle` text NOT NULL,
+  `xstag` text NOT NULL,
+  PRIMARY KEY (`xsid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+$db->sql_query("CREATE TABLE IF NOT EXISTS `" . $prefix . "_xsset` (
+  `xssid` int(11) NOT NULL AUTO_INCREMENT,
+  `xssname` text NOT NULL,
+  `xssvalue` text NOT NULL,
+  PRIMARY KEY (`xssid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;");
+$db->sql_query("INSERT INTO `" . $prefix . "_xsset` (`xssid`, `xssname`, `xssvalue`) VALUES
+(1, 'xstrue', '0'),
+(2, 'xstemp', 'Simple');");
+massaggex("نصب آپشن صوت با موفقیت انجام شد.");
+}
+if(isset($xniniki) AND $xniniki=="setting" AND isset($xstrue) AND isset($xstemp)){
+xssetedit(1,$xatrue);
+xssetedit(2,$xatemp);
+massaggex("تنظیمات صوت بروز شد.");
+}
+if(isset($xniniki) AND $xniniki=="send" AND isset($xstag) AND isset($xsmod) AND isset($xsmid) AND isset($xstitle)){
+if($xstag==""){
+massagrex("آدرس فایل صوتی حتما باید پر شود.");
+}else{
+$db->sql_query("INSERT INTO `$dbname`.`" . $prefix . "_xsound` (
+`xsid` ,
+`xsmid` ,
+`xsmod` ,
+`xstitle` ,
+`xstag`
+)
+VALUES (
+NULL , '$xsmid', '$xsmod', '$xstitle', '$xstag'
+);");
+massaggex("جعبه صوت با موفقیت ارسال شد.");
+}
+}
+if(isset($xniniki) AND $xniniki=="edit" AND isset($xsid)){
+$result = $db->sql_query("SELECT *
+FROM `" . $prefix . "_xsound`
+WHERE `xsid` =$xsid
+LIMIT 0 , 1");
+	while ($row = $db->sql_fetchrow($result)) {
+	mb_internal_encoding('UTF-8');
+	$xsid = intval($row['xsid']);
+	$xsmid = intval($row['xsmid']);
+	$xsmod = $row['xsmod'];
+	$xstitle = $row['xstitle'];
+	$xstag = $row['xstag'];
+?><center><font class="title"><b>ویرایش جعبه صوت</b></font></center><br>
+<form action="<?php echo $admin_file; ?>.php" method="post">
+<table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
+<?php  xsitems($xstag,$xstitle,$xsmid,$xsmod); ?>
+<tr><td><input class="form-submit" type='submit' value='ارسال'>
+</td></tr>
+<input type="hidden" name="xniniki" value="xedit">
+<input type="hidden" name="xsid" value="<?php echo $xsid; ?>">
+<input type="hidden" name="op" value="xmoreoption">
+<input type="hidden" name="xset" value="xsound">
+</table>
+</form>
+<?php
+die();
+	}
+}
+if(isset($xniniki) AND $xniniki=="xedit" AND isset($xsid) AND isset($xstag) AND isset($xsmod) AND isset($xsmid) AND isset($xstitle)){
+$db->sql_query("UPDATE `$dbname`.`" . $prefix . "_xsound` SET `xsmid` = '$xsmid',
+`xsmod` = '$xsmod',
+`xstitle` = '$xstitle',
+`xstag` = '$xstag' WHERE `" . $prefix . "_xsound`.`xsid` =$xsid;");
+massaggex("جعبه صوت با موفقیت ویرایش شد.");
+}
+if($xniniki=="dele" AND isset($xsid)){
+$db->sql_query("DELETE FROM `$dbname`.`" . $prefix . "_xsound` WHERE `" . $prefix . "_xsound`.`xsid` = $xsid");
+massaggex("جعبه صوت با موفقیت حذف شد.");
+}
+?>
+<link rel="stylesheet" href="includes/Ajax/jquery/jquery.tabs.css" type="text/css" media="print, projection, screen" />
+<script src="includes/Ajax/jquery/jquery.tabs.pack.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+$('#container-4').tabs({ fxFade: true, fxSpeed: 'fast' });                              
+});
+</script>
+<br><div class="Table">
+<div class="Contents">
+<div id="container-4">
+<ul>
+	<li><a href="#sendbox"><span>ارسال جعبه صوت</span></a></li>
+	<li><a href="#managbox"><span>مدیریت جعبه های صوت</span></a></li>
+	<li><a href="#xlbhelp"><span>مدیریت آپشن</span></a></li>
+	<li><a href="#xlbfhelp"><span>راهنمای آپشن</span></a></li>
+</ul>
+<div id="sendbox">
+<form action="<?php echo $admin_file; ?>.php" method="post">
+<table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
+<?php  xsitems("","","","News"); ?>
+<tr><td><input class="form-submit" type='submit' value='ارسال'>
+</td></tr>
+<input type="hidden" name="xniniki" value="send">
+<input type="hidden" name="op" value="xmoreoption">
+<input type="hidden" name="xset" value="xsound">
+</table>
+</form>
+</div>
+<div id="managbox">
+<table id="product-table" border="0" width="100%"><tr>
+<th class="table-header-repeat line-left" style="text-align:center;width:40px;"><a>شمارنده</a></th>
+<th class="table-header-repeat line-left" style="text-align:center;"><a>برای ماژول</a></th>
+<th class="table-header-repeat line-left" style="text-align:center;"><a>برای مطلب</a></th>
+<th class="table-header-repeat line-left" style="text-align:center;"><a>عنوان</a></th>
+<th class="table-header-repeat line-left" style="text-align:center;"><a>تگ صوت</a></th>
+<th class="table-header-repeat line-left" style="text-align:center;width:90px;"><a>امکانات</a></th>
+</tr><?php
+$result = $db->sql_query("SELECT *
+FROM `" . $prefix . "_xsound`
+ORDER BY `" . $prefix . "_xsound`.`xsid` DESC
+LIMIT 0 , 99999");
+	while ($row = $db->sql_fetchrow($result)) {
+	mb_internal_encoding('UTF-8');
+	$xsid = intval($row['xsid']);
+	$xsmid = intval($row['xsmid']);
+	$xsmod = $row['xsmod'];
+	$xstitle = $row['xstitle'];
+	$xstag = $row['xstag'];
+	?><tr>
+<td align="center" width="40"><?php echo $xsid; ?></td>
+<td align="center" width="auto"><?php echo $xsmod; ?></td>
+<td align="center" width="auto"><?php echo gettibyb($xsmid, $xsmod); ?></td>
+<td align="center" width="auto"><?php echo $xstitle; ?></td>
+<td align="center" width="auto"><a href="<?php echo $xstag; ?>"><?php echo $xstag; ?></a></td>
+<td align="center" width="auto">
+	<a href="<?php echo $admin_file; ?>.php?op=xmoreoption&xset=xsound&xniniki=dele&xsid=<?php echo $xsid ; ?>" title="حذف آیتم" class="icon-2 info-tooltip"></a>
+	<a href="<?php echo $admin_file; ?>.php?op=xmoreoption&xset=xsound&xniniki=edit&xsid=<?php echo $xsid ; ?>" title="ویرایش آیتم" class="icon-6 info-tooltip"></a>
+</td><?php } ?>
+</tr></table>
+</div>
+<div id="xlbhelp">
+<form action="<?php echo $admin_file; ?>.php" method="post">
+<table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
+<tr><th style="width:250px">غیر فعال کردن جعبه های صوت</th><td>بلی <input name="xatrue" type="radio" class="styled" value="1" <?php if(xssetv(1)==1){ ?>checked<?php } ?>> &nbsp;&nbsp; خیر <input name="xatrue" type="radio" class="styled" value="0" <?php if(xssetv(1)==0){ ?>checked<?php } ?>></td></tr>
+<tr><th>پوسته های جعبه نمایشی صوت</th><td><select name="xatemp" class="styledselect-select">
+	<option value="default" titile="(باید تابع xs_theme در theme.php وجود داشته باشد)" <?php if(xssetv(2)=="default"){ echo"selected"; } ?>>استفاده از تابع پوسته سایت </option>
+<?php
+		$handle=opendir("modules/XMoreOption/theme/Xsound/");
+		while ($file = readdir($handle)) {
+			if ( (!@ereg("[.]",$file)) ) {
+				$themelist .= "$file ";
+			}
+		}
+		closedir($handle);
+		$themelist = explode(" ", $themelist);
+		sort($themelist);
+		for ($i=0; $i < sizeof($themelist); $i++) {
+			if(!empty($themelist[$i])) {
+				echo "	<option value='$themelist[$i]' "; if(xssetv(2)==$themelist[$i]){ echo"selected"; } echo">$themelist[$i]</option>\n";
+			}
+		}
+?>
+</select></td></tr>
+<tr><td><input class="form-submit" type='submit' value='ارسال'>
+</td></tr>
+<input type="hidden" name="xniniki" value="setting">
+<input type="hidden" name="op" value="xmoreoption">
+<input type="hidden" name="xset" value="xsound">
+</table>
+</form>
+</div>
+<div id="xlbfhelp">
+<p>
+	به نام خدا</p>
+<p>راهنمای آپشن صوت برای نیوک</p>
+<br><p style="font:bold 13px tahoma;">تگ صوت چیست؟</p>
+<p>اگر لینک ویدئو شما به صورت زیر باشد : </p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">http://www.aparat.com/v/CF4Mb</pre></p>
+<p>تگ صوت ویدئو شما CF4Mb خواهد بود.</p>
+<br><p style="font:bold 13px tahoma;">چگونه یک جعبه صوت بسازم ؟</p>
+<p>بعد از ورود به بخش مدیریت صوت در تب ارسال جعبه صوت ، فید ها پر کرده و بر submit کلیک کنید.</p>
+<br><p style="font:bold 13px tahoma;">
+	چگونه جعبه را نمایش دهم ؟</p>
+<p>
+	شما می توانید به صورت زیر در هر جای تابع themearticle جعبه را نمایش دهید.</p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">&lt;?php require_once(&quot;XMO.lib.php&quot;); xs_theme($sid,&#39;News&#39;); ?&gt;</pre></p>
+<br><p>به طور مثال در پوسته پیشفرض نیوک به صورت زیر عمل می کنیم :</p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">function themearticle($aid, ... , $topic_link){
+...
+&lt;?php require_once(&quot;XMO.lib.php&quot;); xs_theme($sid,&#39;News&#39;); ?&gt;
+}
+</pre></p>
+<p>به دلیل حجم زیاد کد ها با ... خلاصه شد.</p>
+<br><p style="font:bold 13px tahoma;">
+	چگونه جعبه با پوسته اجتصاصی بسازم ؟</p>
+<p>
+	طراحان پوسته نیوک می توانند با ایجاد تابع xs_theme برای theme.php خود جعبه اختصاصی تعریف کنند.</p>
+<p>
+	همچنین می توانند به صورت مسقل به نشانی modules/XMoreOption/theme/Xsound/ برای نیوک جعبه با پوسته مستقل بسازند.</p>
 </div>
 </div>
 </div>
