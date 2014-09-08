@@ -1,0 +1,9 @@
+﻿.xatheme{width:93.9%;margin:3%;background:#ddd;}
+.xatheme embed{width:100%;height:315px;}
+.xatheme .xaoption{width:100%;height:30px;}
+.xatheme .xatitle{border-right:10px solid #555;float:right;height:30px;text-align:right;width:94.9%;color:#111;padding-right:6px;line-height:26px;}
+.xatheme .xatitle:hover{border-right:10px solid #7423ed;}
+.xatheme .xacanel{border-right:10px solid #555;float:right;text-align:right;width:94.9%;height:30px;color:#111;padding-right:6px;line-height:26px;}
+.xatheme .xacanel:hover{border-right:10px solid #69af1e;}
+.xatheme .xacanel a{color:#111;}
+.xatheme .xacanel a:hover{color:#000;}
