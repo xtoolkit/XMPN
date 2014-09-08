@@ -1,0 +1,19 @@
+﻿.downbox{display:table;/*float:right;*/background:#f4f4f4 url(../images/22.png) right no-repeat;border-bottom:5px solid #CCC;padding:2%;margin:2%;width:91.8%;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;-khtml-border-radius:5px;-o-border-radius:5px;-ms-border-radius:5px;}
+.downbox .xlbin{float:right;min-height:63px;width:100%;}
+.downbox .xlbin .xlbdlabj{float:right;height:40px;width:100%;margin-bottom:10px;}
+.downbox .xlbin .last{margin-bottom:0;}
+.downbox .xlbin .xlbdltit{text-indent:100px;width:70%;float:right;height:36px;font:16px "Segoe UI";margin-top:2px;line-height:32px;}
+.downbox .xlbin .xlbdltit a{color:#da4d60;}
+.downbox .xlbin .xlbdltit span.xlbdlmb{direction:ltr}
+.downbox .xlbin .xlbdlbut{height:40px;float:left;padding:0 10px;background:#2ecc71;margin-right:8px;color:#fff;font:13px "Segoe UI";border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;-khtml-border-radius:5px;-o-border-radius:5px;-ms-border-radius:5px;line-height:36px;}
+.downbox .xlbin .xlbinfo{width:82%;float:left;color:#da4d60;font:12px "Segoe UI";margin-top:10px;}
+.downbox .xlbin .xlbinfo span{color:#111;}
+.downbox .xlbin .xlbinfo .xlbingh{height:16px;padding-right:20px;float:right;font:normal 12px "Segoe UI";margin:5px 1%;width:75%}
+.downbox .xlbin .xlbinfo .xlbdolar{background:url(../images/3.png) right no-repeat;}
+.downbox .xlbin .xlbinfo .xlbgenu{background:url(../images/4.png) right no-repeat;}
+.downbox .xlbin .xlbinfo .xlbsc{color:#4cb67c;background:url(../images/2.png) right no-repeat;}
+.downbox .xlbin .xlbinfo .xlbup{background:url(../images/6.png) right no-repeat;}
+.downbox .xlbin .xlbinfo .xlbref{color:#4cb67c;background:url(../images/1.png) right no-repeat;}
+.downbox .xlbin .xlbinfo .xlbpass{background:url(../images/5.png) right no-repeat;}
+.downbox .xlbin .xlbinfo .xlbrepbug{background:url(../images/7.png) right no-repeat;}
+.downbox .xlbin .xlbinfo .xlbrepbug a{color:#da4d60;}
