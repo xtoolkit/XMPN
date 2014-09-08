@@ -1,7 +1,14 @@
 ﻿<?php
 function xa_theme($id,$mod){
 global $prefix, $db, $dbname;
+$numrow = $db->sql_numrows($db->sql_query("SELECT *
+FROM `" . $prefix . "_xaparat`
+WHERE `xamid` =$id
+AND `xamod` LIKE '$mod'
+LIMIT 0 , 30"));
+if($numrow>0){
 ?><link rel="stylesheet" href="modules/XMoreOption/theme/Xaparat/Simple/css/style.css" type="text/css" /><?php
+}
 $result = $db->sql_query("SELECT *
 FROM `" . $prefix . "_xaparat`
 WHERE `xamid` =$id
