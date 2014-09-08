@@ -26,7 +26,7 @@ $xlbref= $row['xlbref'];
 $xlbpw= $row['xlbpw'];
 }
 ?><link rel="stylesheet" href="modules/XMoreOption/theme/XlinksBox/P30download/css/style.css" type="text/css" />
-<div class="xlbinfo">
+<?php if($xlbidd=="" AND $xlbdolar=="" AND $xlbgemu=="" AND $xlbscsh=="" AND $xlbup=="" AND $xlbref==""){}else{ ?><div class="xlbinfo">
 <div class="xlbrepbug xlbingh"><div class="xlbinftit">مشخصات</div><a href="modules.php?name=reports&sid=<?php echo $id; ?>&rcode=1" class="thickbox">گزارش مشخصات اشتباه</a></div>
 <?php if($xlbdolar==""){}else{ ?><div class="xlbdolar xlbingh"><span>قیمت</span> : <?php echo $xlbdolar; ?></div><?php } ?>
 <?php if($xlbgemu==""){}else{ ?><div class="xlbgenu xlbingh"><span>مجوز</span> : <?php echo $xlbgemu; ?></div><?php } ?>
@@ -34,7 +34,7 @@ $xlbpw= $row['xlbpw'];
 <?php if($xlbup==""){}else{ ?><div class="xlbup xlbingh"><span>آخرین بروز رسانی</span> : <?php echo $xlbup; ?></div><?php } ?>
 <?php if($xlbref==""){}else{ ?><a class="xlbref xlbingh" href="<?php echo $xlbref; ?>" style="font-weight:bold">منبع</a><?php } ?>
 </div>
-<?php
+<?php }
 $result = $db->sql_query("SELECT *
 FROM `" . $prefix . "_xlinksbox`
 WHERE `xlbmid` =$id
