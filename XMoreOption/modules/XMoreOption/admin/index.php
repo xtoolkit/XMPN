@@ -489,7 +489,7 @@ LIMIT 0 , 99999");
 CloseAdminTable();
 }
 function xsound() {
-	global $prefix, $db, $admin_file, $dbname, $sitename, $xniniki, $xsmod, $xsmid, $xstag, $xsid, $xstrue, $xstemp, $xscanal, $xstitle;
+	global $prefix, $db, $admin_file, $dbname, $sitename, $xniniki, $xsmod, $xsmid, $xstag, $xsid, $xstrue, $xstemp, $xstitle;
 OpenAdminTable();
 $dfsdfsd = $db->sql_numrows($db->sql_query("SELECT *
 FROM `" . $prefix . "_xsset`
@@ -515,8 +515,8 @@ $db->sql_query("INSERT INTO `" . $prefix . "_xsset` (`xssid`, `xssname`, `xssval
 massaggex("نصب آپشن صوت با موفقیت انجام شد.");
 }
 if(isset($xniniki) AND $xniniki=="setting" AND isset($xstrue) AND isset($xstemp)){
-xssetedit(1,$xatrue);
-xssetedit(2,$xatemp);
+xssetedit(1,$xstrue);
+xssetedit(2,$xstemp);
 massaggex("تنظیمات صوت بروز شد.");
 }
 if(isset($xniniki) AND $xniniki=="send" AND isset($xstag) AND isset($xsmod) AND isset($xsmid) AND isset($xstitle)){
@@ -639,8 +639,8 @@ LIMIT 0 , 99999");
 <div id="xlbhelp">
 <form action="<?php echo $admin_file; ?>.php" method="post">
 <table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
-<tr><th style="width:250px">غیر فعال کردن جعبه های صوت</th><td>بلی <input name="xatrue" type="radio" class="styled" value="1" <?php if(xssetv(1)==1){ ?>checked<?php } ?>> &nbsp;&nbsp; خیر <input name="xatrue" type="radio" class="styled" value="0" <?php if(xssetv(1)==0){ ?>checked<?php } ?>></td></tr>
-<tr><th>پوسته های جعبه نمایشی صوت</th><td><select name="xatemp" class="styledselect-select">
+<tr><th style="width:250px">غیر فعال کردن جعبه های صوت</th><td>بلی <input name="xstrue" type="radio" class="styled" value="1" <?php if(xssetv(1)==1){ ?>checked<?php } ?>> &nbsp;&nbsp; خیر <input name="xstrue" type="radio" class="styled" value="0" <?php if(xssetv(1)==0){ ?>checked<?php } ?>></td></tr>
+<tr><th>پوسته های جعبه نمایشی صوت</th><td><select name="xstemp" class="styledselect-select">
 	<option value="default" titile="(باید تابع xs_theme در theme.php وجود داشته باشد)" <?php if(xssetv(2)=="default"){ echo"selected"; } ?>>استفاده از تابع پوسته سایت </option>
 <?php
 		$handle=opendir("modules/XMoreOption/theme/Xsound/");
