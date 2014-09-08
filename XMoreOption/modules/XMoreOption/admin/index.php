@@ -450,12 +450,25 @@ LIMIT 0 , 99999");
 CloseAdminTable();
 }
 function xlinksbox() {
-	global $prefix, $db, $admin_file, $dbname, $sitename, $xlbdlgra, $xlbdlpass, $xlbdptrue, $xniniki, $xlbid, $xlbmod, $xlbmid, $xlbti, $xlbdl, $xlbmrdl, $xlbmb, $xlbmd, $xlbdolar, $xlbgemu, $xlbscsh, $xlbup, $xlbref, $xlbpw, $xlbtrue, $xlbview, $xlbtemp;
+	global $prefix, $db, $admin_file, $dbname, $sitename, $xlbdlgra, $xlbhelpmorei, $xlbdlpass, $xlbdptrue, $xniniki, $xlbid, $xlbmod, $xlbmid, $xlbti, $xlbdl, $xlbmrdl, $xlbmb, $xlbmd, $xlbdolar, $xlbgemu, $xlbscsh, $xlbup, $xlbref, $xlbpw, $xlbtrue, $xlbview, $xlbtemp;
 OpenAdminTable();
 $dfsdfsd = $db->sql_numrows($db->sql_query("SELECT *
 FROM `" . $prefix . "_xlbset`
-LIMIT 0 , 3"));
-if($dfsdfsd>0){}else{
+LIMIT 0 , 7"));
+if($dfsdfsd>0){
+if($dfsdfsd==6){
+$xlbimporthelping="<ul>
+	<li>برای دانلود، به روی عبارت \"دانلود\" کلیک کنید و منتظر بمانید تا پنجره مربوطه ظاهر شود سپس محل ذخیره شدن فایل را انتخاب کنید و منتظر بمانید تا دانلود تمام شود.</li>
+	<li>اگر نرم افزار مدیریت دانلود ندارید، پیشنهاد می شود برای دانلود فایل ها حتماً از یک نرم افزار مدیریت دانلود و مخصوصاً <a href=\"http://p30download.com/fa/entry/566/\" target=\"_blank\"><b>FlashGet</b></a> استفاده کنید.</li>
+	<li>چنانچه قادر به دانلود از سرور دانلود مستقیم نیستید، از لینک های کمکی استفاده کنید.<br /><i>( لینک کمکی چیست؟ لینک کمکی، یک کپی مشابه از فایل است که بر روی یک سایت دیگر جهت دانلود قرار داده می شود و در مواقعی که یک سرور قادر به سرویس دهی نباشد شما می توانید فایل مورد نظر خود را از یک سرور دیگر دانلود نمائید)</i></li>
+	<li>فایل های قرار داده شده برای دانلود به منظور کاهش حجم و دریافت سریعتر فشرده شده اند، برای خارج سازی فایل ها از حالت فشرده از نرم افزار <a href=\"http://p30download.com/fa/entry/268/\" target=\"_blank\"><b>Winrar</b></a> و یا مشابه آن استفاده کنید.</li>
+	<li>چنانچه در هنگام خارج سازی فایل از حالت فشرده با پیغام <b>CRC</b> مواجه شدید، در صورتی که کلمه رمز را درست وارد کرده باشید. فایل به صورت خراب دانلود شده است و می بایستی مجدداً آن را دانلود کنید.</li>
+	<li>فایل های کرک به دلیل ماهیت عملکرد در هنگام استفاده ممکن است توسط آنتی ویروس ها به عنوان فایل خطرناک شناسایی شوند در این گونه مواقع به صورت موقت آنتی ویروس خود را غیر فعال کنید.</li>
+</ul>";
+$db->sql_query("INSERT INTO `$dbname`.`" . $prefix . "_xlbset` (`xlb`, `xlbname`, `xlbvalue`) VALUES (7, 'xlbmorehelp', '$xlbimporthelping');");
+massaggex("جعبه دانلود با موفقیت آپدیت شد.");
+}
+}else{
 $db->sql_query("CREATE TABLE IF NOT EXISTS `" . $prefix . "_xlbset` (
   `xlb` int(11) NOT NULL AUTO_INCREMENT,
   `xlbname` text NOT NULL,
@@ -512,13 +525,14 @@ NULL , '$xlbmid', '0', '$xlbmod', '$xlbti', '$xlbdl', '$xlbmrdl', '$xlbmb', '$xl
 );");
 massaggex("جعبه با موفقیت ارسال شد.");
 }
-if($xniniki=="setting" AND isset($xlbtrue) AND isset($xlbview) AND isset($xlbtemp) AND isset($xlbdlpass) AND isset($xlbdptrue) AND isset($xlbdlgra)){
+if($xniniki=="setting" AND isset($xlbtrue) AND isset($xlbview) AND isset($xlbtemp) AND isset($xlbdlpass) AND isset($xlbdptrue) AND isset($xlbdlgra) AND isset($xlbhelpmorei)){
 xlbsetedit(1,$xlbtrue);
 xlbsetedit(2,$xlbview);
 xlbsetedit(3,$xlbtemp);
 xlbsetedit(4,$xlbdptrue);
 xlbsetedit(5,$xlbdlpass);
 xlbsetedit(6,$xlbdlgra);
+xlbsetedit(7,$xlbhelpmorei);
 massaggex("تغییرات با موفقیت ویرایش شد.");
 }
 if($xniniki=="xedit" AND isset($xlbid)){
@@ -667,6 +681,7 @@ LIMIT 0 , 99999");
 		}
 ?>
 </select></td></tr>
+<tr><th>متن راهنمای دانلود : </th><td><?php wysiwyg_textarea('xlbhelpmorei',xlbsetv(7), 'Comments', 50, 15); ?></td></tr>
 <tr><td><input class="form-submit" type='submit' value='ارسال'>
 </td></tr>
 <input type="hidden" name="xniniki" value="setting">
