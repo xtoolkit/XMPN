@@ -1,0 +1,7 @@
+﻿.xstheme{width:93.9%;margin:4% 1%;padding:2%;background:#ededed;border-radius:4px;}
+.xstheme .xsoption{width:100%;min-height:70px;}
+.xstheme .xsoption *{border-radius:4px;}
+.xstheme .xsbti{width:100px;height:30px;margin:-24px 10px 10px 0;padding:0;background:#227c92;color:#fff;font:normal 14px "Segoe UI",tahoma;text-align:center;line-height:26px;}
+.xstheme .xstitle{float:right;width:40%;height:30px;font:normal 14px "Segoe UI",tahoma;text-align:center;border:1px solid #dedede;background:#ececec;line-height:26px;color:#777;}
+.xstheme .xstitle:hover{border:1px solid #888;background:#ddd;line-height:26px;color:#888;}
+.xstheme object{float:left;width:200px;height:28px;padding-top:6px;}
