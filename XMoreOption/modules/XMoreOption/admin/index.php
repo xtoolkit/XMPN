@@ -78,9 +78,9 @@ function get_latest_xmoreoptionverj($mode=''){
 		return $file_info;
 	}else{
 		if(isset($mode) && $mode == "adminmain"){
-			die("Beta1");
+			die("Beta2");
 		}
-		return "Beta1";
+		return "Beta2";
 	}
 }
 function massaggex($text){
@@ -152,6 +152,26 @@ function xaitems($item1,$item2,$item12,$item13){
 <tr><td>تگ آپارات : </td><td><input name='xatag' value='<?php echo $item1; ?>' class="inp-form-ltr"></td></tr>
 <?php
 }
+function xpitems($item1,$item2,$item12,$item13){
+	global $prefix,$db,$dbname;
+?>
+<tr><td>جعبه تصویر برای ماژول : </td><td><select name="xpmod" class="styledselect-select">
+<option value="News" <?php if($item13=="News"){ ?>selected<?php } ?>>News</option>
+<option value="Contact" disabled<?php if($item13=="Contact"){ ?>selected<?php } ?>>Contact</option>
+</select></td></tr>
+<tr><th>جعبه تصویر برای مطلب : </th><td><select name="xpmid" class="styledselect-select">
+<?php	$result = $db->sql_query("SELECT * FROM `" . $prefix . "_stories` ORDER BY `" . $prefix . "_stories`.`sid` DESC LIMIT 0 , 9999");
+	while ($row = $db->sql_fetchrow($result)) {
+	mb_internal_encoding('UTF-8');
+	$sid = intval($row['sid']);
+	$title = check_html($row['title'], "nohtml");
+?><option value="<?php echo $sid; ?>" <?php if($item12==$sid){ ?>selected<?php } ?>><?php echo $title; ?></option>
+<?php } ?>
+</select></td></tr>
+<tr><td>نام تصویر : </td><td><input name='xptitle' value='<?php echo $item2; ?>' class="inp-form-ltr"></td></tr>
+<tr><td>آدرس تصویر : </td><td><input name='xptag' value='<?php echo $item1; ?>' class="inp-form-ltr"></td></tr>
+<?php
+}
 function xsitems($item1,$item2,$item12,$item13){
 	global $prefix,$db,$dbname;
 ?>
@@ -208,6 +228,16 @@ $result = $db->sql_query("SELECT * FROM `" . $prefix . "_xaset` WHERE `xasid` =$
 }
 return $xasvalue;
 }
+function xpsetv($nuim){
+global $prefix, $db, $dbname;
+$nuim=intval($nuim);
+$result = $db->sql_query("SELECT * FROM `" . $prefix . "_xpset` WHERE `xpsid` =$nuim LIMIT 0 , 1");
+	while ($row = $db->sql_fetchrow($result)) {
+	mb_internal_encoding('UTF-8');
+	$xasvalue = $row['xpsvalue'];
+}
+return $xasvalue;
+}
 function xssetv($nuim){
 global $prefix, $db, $dbname;
 $nuim=intval($nuim);
@@ -228,6 +258,11 @@ global $prefix, $db, $dbname;
 $nuim=intval($nuim);
 $db->sql_query("UPDATE `$dbname`.`" . $prefix . "_xaset` SET `xasvalue` = '$xxvalue' WHERE `" . $prefix . "_xaset`.`xasid` =$nuim;");
 }
+function xpsetedit($nuim,$xxvalue){
+global $prefix, $db, $dbname;
+$nuim=intval($nuim);
+$db->sql_query("UPDATE `$dbname`.`" . $prefix . "_xpset` SET `xpsvalue` = '$xxvalue' WHERE `" . $prefix . "_xpset`.`xpsid` =$nuim;");
+}
 function xssetedit($nuim,$xxvalue){
 global $prefix, $db, $dbname;
 $nuim=intval($nuim);
@@ -239,12 +274,12 @@ include ("header.php");
 GraphicAdmin();
 OpenAdminTable();
 if (extension_loaded('sockets') && function_exists('fsockopen') ){ $xmnvaa=get_latest_xmoreoptionverj(); } 
-if($xmnvaa==""){$xmnvaa=="Beta1";}
-if($xmnvaa=="Beta1"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xmoreoption-t70999.html\">نسخه جدید سیستم XMoreOption به ورژن $xmnvaa انتشار یافت !!!</a>");}
+if($xmnvaa==""){$xmnvaa=="Beta2";}
+if($xmnvaa=="Beta2"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xmoreoption-t70999.html\">نسخه جدید سیستم XMoreOption به ورژن $xmnvaa انتشار یافت !!!</a>");}
 ?><center><font class="title"><b>آپشن های ادامه مطلب</b></font></center><br>
 <style type="text/css">
 .xmoreopt{text-align:center;height:270px;width:100%;}
-.xmoabj{margin-left:100px;width:200px;height:250px;float:right;}
+.xmoabj{margin-left:20px;width:200px;height:250px;float:right;}
 .xmoabj a{width:200px;height:200px;float:right;}
 .xmoabj span{width:200px;height:50px;float:right;text-align:center;}
 .xmoabj a:hover{background-position:0 100%;}
@@ -263,6 +298,10 @@ if($xmnvaa=="Beta1"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/foru
 <a href="<?php echo $admin_file; ?>.php?op=xmoreoption&xset=xsound" style="background-image:url(modules/XMoreOption/images/xsound.png)"></a>
 <span>جعبه صوت</span>
 </div>
+<div class="xmoabj <?php if($xset=="xpshpt"){ ?>selected<?php } ?>">
+<a href="<?php echo $admin_file; ?>.php?op=xmoreoption&xset=xpshpt" style="background-image:url(modules/XMoreOption/images/xpshpt.png)"></a>
+<span>جعبه تصاویر</span>
+</div>
 </div>
 <br>
 <?php
@@ -271,6 +310,228 @@ if(isset($xset) AND $xset!==""){
 $xset();
 }
 include ("footer.php");
+}
+function xpshpt() {
+	global $prefix, $db, $admin_file, $dbname, $sitename, $xniniki, $xpmod, $xpmid, $xptag, $xpid, $xptrue, $xptemp, $xptitle, $xpwidth, $xpheight, $xpcustp;
+OpenAdminTable();
+$dfsdfsd = $db->sql_numrows($db->sql_query("SELECT *
+FROM `" . $prefix . "_xpset`
+LIMIT 0 , 3"));
+if($dfsdfsd>0){}else{
+$db->sql_query("CREATE TABLE IF NOT EXISTS `" . $prefix . "_xpshpt` (
+  `xpid` int(11) NOT NULL AUTO_INCREMENT,
+  `xpmid` int(11) NOT NULL,
+  `xpmod` text NOT NULL,
+  `xptitle` text NOT NULL,
+  `xptag` text NOT NULL,
+  PRIMARY KEY (`xpid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+$db->sql_query("CREATE TABLE IF NOT EXISTS `" . $prefix . "_xpset` (
+  `xpsid` int(11) NOT NULL AUTO_INCREMENT,
+  `xpsname` text NOT NULL,
+  `xpsvalue` text NOT NULL,
+  PRIMARY KEY (`xpsid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;");
+$db->sql_query("INSERT INTO `" . $prefix . "_xpset` (`xpsid`, `xpsname`, `xpsvalue`) VALUES
+(1, 'xptrue', '0'),
+(2, 'xptemp', 'Simple'),
+(3, 'xpcustp', '0'),
+(4, 'xpwidth', '100'),
+(5, 'xpheight', '60');");
+massaggex("نصب آپشن تصویر با موفقیت انجام شد.");
+}
+if(isset($xniniki) AND $xniniki=="setting" AND isset($xptrue) AND isset($xptemp) AND isset($xpwidth) AND isset($xpheight) AND isset($xpcustp)){
+xpsetedit(1,$xptrue);
+xpsetedit(2,$xptemp);
+xpsetedit(3,$xpcustp);
+xpsetedit(4,$xpwidth);
+xpsetedit(5,$xpheight);
+massaggex("تنظیمات جعبه تصاویر بروز شد.");
+}
+if(isset($xniniki) AND $xniniki=="send" AND isset($xptag) AND isset($xpmod) AND isset($xpmid) AND isset($xptitle)){
+if($xptag==""){
+massagrex("آدرس تصویر حتما باید پر شود!!!");
+}else{
+$db->sql_query("INSERT INTO `$dbname`.`" . $prefix . "_xpshpt` (
+`xpid` ,
+`xpmid` ,
+`xpmod` ,
+`xptitle` ,
+`xptag`
+)
+VALUES (
+NULL , '$xpmid', '$xpmod', '$xptitle', '$xptag'
+);");
+massaggex("جعبه تصویر با موفقیت ارسال شد.");
+}
+}
+if(isset($xniniki) AND $xniniki=="edit" AND isset($xpid)){
+$result = $db->sql_query("SELECT *
+FROM `" . $prefix . "_xpshpt`
+WHERE `xpid` =$xpid
+LIMIT 0 , 1");
+	while ($row = $db->sql_fetchrow($result)) {
+	mb_internal_encoding('UTF-8');
+	$xpid = intval($row['xpid']);
+	$xpmid = intval($row['xpmid']);
+	$xpmod = $row['xpmod'];
+	$xptitle = $row['xptitle'];
+	$xptag = $row['xptag'];
+?><center><font class="title"><b>ویرایش جعبه تصاویر</b></font></center><br>
+<form action="<?php echo $admin_file; ?>.php" method="post">
+<table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
+<?php  xpitems($xptag,$xptitle,$xpmid,$xpmod); ?>
+<tr><td><input class="form-submit" type='submit' value='ارسال'>
+</td></tr>
+<input type="hidden" name="xniniki" value="xedit">
+<input type="hidden" name="xpid" value="<?php echo $xpid; ?>">
+<input type="hidden" name="op" value="xmoreoption">
+<input type="hidden" name="xset" value="xpshpt">
+</table>
+</form>
+<?php
+die();
+	}
+}
+if(isset($xniniki) AND $xniniki=="xedit" AND isset($xpid) AND isset($xptag) AND isset($xpmod) AND isset($xpmid) AND isset($xptitle)){
+$db->sql_query("UPDATE `$dbname`.`" . $prefix . "_xpshpt` SET `xpmid` = '$xpmid',
+`xpmod` = '$xpmod',
+`xptitle` = '$xptitle',
+`xptag` = '$xptag' WHERE `" . $prefix . "_xpshpt`.`xpid` =$xpid;");
+massaggex("جعبه تصویر با موفقیت ویرایش شد.");
+}
+if($xniniki=="dele" AND isset($xpid)){
+$db->sql_query("DELETE FROM `$dbname`.`" . $prefix . "_xpshpt` WHERE `" . $prefix . "_xpshpt`.`xpid` = $xpid");
+massaggex("جعبه تصویر با موفقیت حذف شد.");
+}
+?>
+<link rel="stylesheet" href="includes/Ajax/jquery/jquery.tabs.css" type="text/css" media="print, projection, screen" />
+<script src="includes/Ajax/jquery/jquery.tabs.pack.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+$('#container-4').tabs({ fxFade: true, fxSpeed: 'fast' });                              
+});
+</script>
+<br><div class="Table">
+<div class="Contents">
+<div id="container-4">
+<ul>
+	<li><a href="#sendbox"><span>ارسال جعبه تصویر</span></a></li>
+	<li><a href="#managbox"><span>مدیریت جعبه های تصاویر</span></a></li>
+	<li><a href="#xlbhelp"><span>مدیریت آپشن</span></a></li>
+	<li><a href="#xlbfhelp"><span>راهنمای آپشن</span></a></li>
+</ul>
+<div id="sendbox">
+<form action="<?php echo $admin_file; ?>.php" method="post">
+<table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
+<?php  xaitems("","","","News"); ?>
+<tr><td><input class="form-submit" type='submit' value='ارسال'>
+</td></tr>
+<input type="hidden" name="xniniki" value="send">
+<input type="hidden" name="op" value="xmoreoption">
+<input type="hidden" name="xset" value="xpshpt">
+</table>
+</form>
+</div>
+<div id="managbox">
+<table id="product-table" border="0" width="100%"><tr>
+<th class="table-header-repeat line-left" style="text-align:center;width:40px;"><a>شمارنده</a></th>
+<th class="table-header-repeat line-left" style="text-align:center;"><a>برای ماژول</a></th>
+<th class="table-header-repeat line-left" style="text-align:center;"><a>برای مطلب</a></th>
+<th class="table-header-repeat line-left" style="text-align:center;"><a>عنوان</a></th>
+<th class="table-header-repeat line-left" style="text-align:center;"><a>آدرس تصاویر</a></th>
+<th class="table-header-repeat line-left" style="text-align:center;width:90px;"><a>امکانات</a></th>
+</tr><?php
+$result = $db->sql_query("SELECT *
+FROM `" . $prefix . "_xpshpt`
+ORDER BY `" . $prefix . "_xpshpt`.`xpid` DESC
+LIMIT 0 , 99999");
+	while ($row = $db->sql_fetchrow($result)) {
+	mb_internal_encoding('UTF-8');
+	$xpid = intval($row['xpid']);
+	$xpmid = intval($row['xpmid']);
+	$xpmod = $row['xpmod'];
+	$xptitle = $row['xptitle'];
+	$xptag = $row['xptag'];
+	?><tr>
+<td align="center" width="40"><?php echo $xpid; ?></td>
+<td align="center" width="auto"><?php echo $xpmod; ?></td>
+<td align="center" width="auto"><?php echo gettibyb($xpmid, $xpmod); ?></td>
+<td align="center" width="auto"><?php echo $xptitle; ?></td>
+<td align="center" width="auto"><a href="http://www.aparat.com/v/<?php echo $xptag; ?>"><?php echo $xptag; ?></a></td>
+<td align="center" width="auto">
+	<a href="<?php echo $admin_file; ?>.php?op=xmoreoption&xset=xpshpt&xniniki=dele&xpid=<?php echo $xpid ; ?>" title="حذف آیتم" class="icon-2 info-tooltip"></a>
+	<a href="<?php echo $admin_file; ?>.php?op=xmoreoption&xset=xpshpt&xniniki=edit&xpid=<?php echo $xpid ; ?>" title="ویرایش آیتم" class="icon-6 info-tooltip"></a>
+</td><?php } ?>
+</tr></table>
+</div>
+<div id="xlbhelp">
+<form action="<?php echo $admin_file; ?>.php" method="post">
+<table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
+<tr><th style="width:250px">غیر فعال کردن جعبه های تصاویر</th><td>بلی <input name="xptrue" type="radio" class="styled" value="1" <?php if(xpsetv(1)==1){ ?>checked<?php } ?>> &nbsp;&nbsp; خیر <input name="xptrue" type="radio" class="styled" value="0" <?php if(xpsetv(1)==0){ ?>checked<?php } ?>></td></tr>
+<tr><th>فعال بودن اندازه دستی thump</th><td>بلی <input name="xpcustp" type="radio" class="styled" value="1" <?php if(xpsetv(3)==1){ ?>checked<?php } ?>> &nbsp;&nbsp; خیر <input name="xpcustp" type="radio" class="styled" value="0" <?php if(xpsetv(3)==0){ ?>checked<?php } ?>> - در صورت غیر فعال بودن اندازه بر اساس اندازه درخواستی قالب خواهد بود.</td></tr>
+<tr><td>عرض تصویر thumb : </td><td><input name='xpwidth' value='<?php echo xpsetv(4); ?>' class="inp-form-ltr"></td></tr>
+<tr><td>ارتفاع تصویر thumb : </td><td><input name='xpheight' value='<?php echo xpsetv(5); ?>' class="inp-form-ltr"></td></tr>
+<tr><th>پوسته های جعبه نمایشی تصاویر</th><td><select name="xptemp" class="styledselect-select">
+	<option value="default" titile="(باید تابع xp_theme در theme.php وجود داشته باشد)" <?php if(xpsetv(2)=="default"){ echo"selected"; } ?>>استفاده از تابع پوسته سایت </option>
+<?php
+		$handle=opendir("modules/XMoreOption/theme/Xpshpt/");
+		while ($file = readdir($handle)) {
+			if ( (!@ereg("[.]",$file)) ) {
+				$themelist .= "$file ";
+			}
+		}
+		closedir($handle);
+		$themelist = explode(" ", $themelist);
+		sort($themelist);
+		for ($i=0; $i < sizeof($themelist); $i++) {
+			if(!empty($themelist[$i])) {
+				echo "	<option value='$themelist[$i]' "; if(xpsetv(2)==$themelist[$i]){ echo"selected"; } echo">$themelist[$i]</option>\n";
+			}
+		}
+?>
+</select></td></tr>
+<tr><td><input class="form-submit" type='submit' value='ارسال'>
+</td></tr>
+<input type="hidden" name="xniniki" value="setting">
+<input type="hidden" name="op" value="xmoreoption">
+<input type="hidden" name="xset" value="xpshpt">
+</table>
+</form>
+</div>
+<div id="xlbfhelp">
+<p>
+	به نام خدا</p>
+<p>راهنمای آپشن آپارات برای نیوک</p>
+<br><p style="font:bold 13px tahoma;">آدرس آپارات چیست؟</p>
+<p>اگر لینک ویدئو شما به صورت زیر باشد : </p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">http://www.aparat.com/v/CF4Mb</pre></p>
+<p>آدرس آپارات ویدئو شما CF4Mb خواهد بود.</p>
+<br><p style="font:bold 13px tahoma;">چگونه یک جعبه آپارات بسازم ؟</p>
+<p>بعد از ورود به بخش مدیریت آپارات در تب ارسال جعبه اپارات ، فید ها پر کرده و بر submit کلیک کنید.</p>
+<br><p style="font:bold 13px tahoma;">
+	چگونه جعبه را نمایش دهم ؟</p>
+<p>
+	شما می توانید به صورت زیر در هر جای تابع themearticle جعبه را نمایش دهید.</p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">&lt;?php require_once(&quot;XMO.lib.php&quot;); xp_theme($sid,&#39;News&#39;); ?&gt;</pre></p>
+<br><p>به طور مثال در پوسته پیشفرض نیوک به صورت زیر عمل می کنیم :</p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">function themearticle($aid, ... , $topic_link){
+...
+&lt;?php require_once(&quot;XMO.lib.php&quot;); xp_theme($sid,&#39;News&#39;); ?&gt;
+}
+</pre></p>
+<p>به دلیل حجم زیاد کد ها با ... خلاصه شد.</p>
+<br><p style="font:bold 13px tahoma;">
+	چگونه جعبه با پوسته اجتصاصی بسازم ؟</p>
+<p>
+	طراحان پوسته نیوک می توانند با ایجاد تابع xp_theme برای theme.php خود جعبه اختصاصی تعریف کنند.</p>
+<p>
+	همچنین می توانند به صورت مسقل به نشانی modules/XMoreOption/theme/xpshpt/ برای نیوک جعبه با پوسته مستقل بسازند.</p>
+</div>
+</div>
+</div>
+</div><?php
+CloseAdminTable();
 }
 function xaparat() {
 	global $prefix, $db, $admin_file, $dbname, $sitename, $xniniki, $xamod, $xamid, $xatag, $xaid, $xatrue, $xatemp, $xacanal, $xatitle;
