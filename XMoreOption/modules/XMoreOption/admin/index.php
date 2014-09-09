@@ -78,9 +78,9 @@ function get_latest_xmoreoptionverj($mode=''){
 		return $file_info;
 	}else{
 		if(isset($mode) && $mode == "adminmain"){
-			die("Initial3");
+			die("Beta1");
 		}
-		return "Initial3";
+		return "Beta1";
 	}
 }
 function massaggex($text){
@@ -239,8 +239,8 @@ include ("header.php");
 GraphicAdmin();
 OpenAdminTable();
 if (extension_loaded('sockets') && function_exists('fsockopen') ){ $xmnvaa=get_latest_xmoreoptionverj(); } 
-if($xmnvaa==""){$xmnvaa=="Initial3";}
-if($xmnvaa=="Initial3"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xmoreoption-t70999.html\">نسخه جدید سیستم XMoreOption به ورژن $xmnvaa انتشار یافت !!!</a>");}
+if($xmnvaa==""){$xmnvaa=="Beta1";}
+if($xmnvaa=="Beta1"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xmoreoption-t70999.html\">نسخه جدید سیستم XMoreOption به ورژن $xmnvaa انتشار یافت !!!</a>");}
 ?><center><font class="title"><b>آپشن های ادامه مطلب</b></font></center><br>
 <style type="text/css">
 .xmoreopt{text-align:center;height:270px;width:100%;}
@@ -671,10 +671,6 @@ LIMIT 0 , 99999");
 <p>
 	به نام خدا</p>
 <p>راهنمای آپشن صوت برای نیوک</p>
-<br><p style="font:bold 13px tahoma;">تگ صوت چیست؟</p>
-<p>اگر لینک ویدئو شما به صورت زیر باشد : </p>
-<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">http://www.aparat.com/v/CF4Mb</pre></p>
-<p>تگ صوت ویدئو شما CF4Mb خواهد بود.</p>
 <br><p style="font:bold 13px tahoma;">چگونه یک جعبه صوت بسازم ؟</p>
 <p>بعد از ورود به بخش مدیریت صوت در تب ارسال جعبه صوت ، فید ها پر کرده و بر submit کلیک کنید.</p>
 <br><p style="font:bold 13px tahoma;">
