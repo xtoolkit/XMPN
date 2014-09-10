@@ -4,7 +4,7 @@ if (!defined('MODULE_FILE')) {
 }
 require_once("mainfile.php");
 $module_name = basename(dirname(__FILE__));
-global $nukeurl, $prefix, $db, $com, $xlbid, $xlbpwhr, $xlbreport, $xset;
+global $nukeurl, $prefix, $db, $com, $xlbid, $xlbpwhr, $xlbreport, $xset, $xpid;
 define('INDEX_FILE', true);
 if($xset=="XlinksBox"){
 function xlbsetv($nuim){

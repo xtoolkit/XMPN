@@ -424,7 +424,7 @@ $('#container-4').tabs({ fxFade: true, fxSpeed: 'fast' });
 <div id="sendbox">
 <form action="<?php echo $admin_file; ?>.php" method="post">
 <table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
-<?php  xaitems("","","","News"); ?>
+<?php  xpitems("","","","News"); ?>
 <tr><td><input class="form-submit" type='submit' value='ارسال'>
 </td></tr>
 <input type="hidden" name="xniniki" value="send">
@@ -458,7 +458,7 @@ LIMIT 0 , 99999");
 <td align="center" width="auto"><?php echo $xpmod; ?></td>
 <td align="center" width="auto"><?php echo gettibyb($xpmid, $xpmod); ?></td>
 <td align="center" width="auto"><?php echo $xptitle; ?></td>
-<td align="center" width="auto"><a href="http://www.aparat.com/v/<?php echo $xptag; ?>"><?php echo $xptag; ?></a></td>
+<td align="center" width="auto"><a href="<?php echo $xptag; ?>"><?php echo $xptag; ?></a></td>
 <td align="center" width="auto">
 	<a href="<?php echo $admin_file; ?>.php?op=xmoreoption&xset=xpshpt&xniniki=dele&xpid=<?php echo $xpid ; ?>" title="حذف آیتم" class="icon-2 info-tooltip"></a>
 	<a href="<?php echo $admin_file; ?>.php?op=xmoreoption&xset=xpshpt&xniniki=edit&xpid=<?php echo $xpid ; ?>" title="ویرایش آیتم" class="icon-6 info-tooltip"></a>
@@ -502,13 +502,9 @@ LIMIT 0 , 99999");
 <div id="xlbfhelp">
 <p>
 	به نام خدا</p>
-<p>راهنمای آپشن آپارات برای نیوک</p>
-<br><p style="font:bold 13px tahoma;">آدرس آپارات چیست؟</p>
-<p>اگر لینک ویدئو شما به صورت زیر باشد : </p>
-<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">http://www.aparat.com/v/CF4Mb</pre></p>
-<p>آدرس آپارات ویدئو شما CF4Mb خواهد بود.</p>
-<br><p style="font:bold 13px tahoma;">چگونه یک جعبه آپارات بسازم ؟</p>
-<p>بعد از ورود به بخش مدیریت آپارات در تب ارسال جعبه اپارات ، فید ها پر کرده و بر submit کلیک کنید.</p>
+<p>راهنمای آپشن تصاویر برای نیوک</p>
+<br><p style="font:bold 13px tahoma;">چگونه یک جعبه تصویر بسازم ؟</p>
+<p>بعد از ورود به بخش مدیریت آپارات در تب ارسال جعبه تصویر ، فید ها پر کرده و بر submit کلیک کنید.</p>
 <br><p style="font:bold 13px tahoma;">
 	چگونه جعبه را نمایش دهم ؟</p>
 <p>
@@ -522,11 +518,17 @@ LIMIT 0 , 99999");
 </pre></p>
 <p>به دلیل حجم زیاد کد ها با ... خلاصه شد.</p>
 <br><p style="font:bold 13px tahoma;">
-	چگونه جعبه با پوسته اجتصاصی بسازم ؟</p>
+	چگونه جعبه با پوسته اختصاصی بسازم ؟</p>
 <p>
 	طراحان پوسته نیوک می توانند با ایجاد تابع xp_theme برای theme.php خود جعبه اختصاصی تعریف کنند.</p>
 <p>
 	همچنین می توانند به صورت مسقل به نشانی modules/XMoreOption/theme/xpshpt/ برای نیوک جعبه با پوسته مستقل بسازند.</p>
+<br><p style="font:bold 13px tahoma;">چگونه از جعبه تصاویر عکس انتخاب کنم ؟</p>
+<br><p>شما برای انتخاب یک تصویر از دیتا بیس جعبه تصاویر برای استفاده در هرجایی مانند فراخوانی تصاویر برای اسلادشو می توانید به روش زیر عمل کنید :</p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">
+require_once(&quot;XMO.lib.php&quot;);
+echo xp_fpics(&quot;5&quot;,&quot;News&quot;,&quot;DESC&quot;,&quot;url&quot;); // your module item id, your module select, Sort[DESC,ASC], return[url,title]
+</pre></p>
 </div>
 </div>
 </div>
@@ -738,7 +740,7 @@ LIMIT 0 , 99999");
 </pre></p>
 <p>به دلیل حجم زیاد کد ها با ... خلاصه شد.</p>
 <br><p style="font:bold 13px tahoma;">
-	چگونه جعبه با پوسته اجتصاصی بسازم ؟</p>
+	چگونه جعبه با پوسته اختصاصی بسازم ؟</p>
 <p>
 	طراحان پوسته نیوک می توانند با ایجاد تابع xa_theme برای theme.php خود جعبه اختصاصی تعریف کنند.</p>
 <p>
@@ -947,7 +949,7 @@ LIMIT 0 , 99999");
 </pre></p>
 <p>به دلیل حجم زیاد کد ها با ... خلاصه شد.</p>
 <br><p style="font:bold 13px tahoma;">
-	چگونه جعبه با پوسته اجتصاصی بسازم ؟</p>
+	چگونه جعبه با پوسته اختصاصی بسازم ؟</p>
 <p>
 	طراحان پوسته نیوک می توانند با ایجاد تابع xs_theme برای theme.php خود جعبه اختصاصی تعریف کنند.</p>
 <p>
@@ -1228,7 +1230,7 @@ function themearticle($aid, ... , $topic_link){
 </pre></p>
 <p>به دلیل حجم زیاد کد ها با ... خلاصه شد.</p>
 <br><p style="font:bold 13px tahoma;">
-	چگونه جعبه با پوسته اجتصاصی بسازم ؟</p>
+	چگونه جعبه با پوسته اختصاصی بسازم ؟</p>
 <p>
 	طراحان پوسته نیوک می توانند با ایجاد تابع xlb_theme برای theme.php خود جعبه اختصاصی تعریف کنند.</p>
 <p>
