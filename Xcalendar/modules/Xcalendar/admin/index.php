@@ -78,9 +78,9 @@ function get_latest_xcalendarverj($mode=''){
 		return $file_info;
 	}else{
 		if(isset($mode) && $mode == "adminmain"){
-			die("Initial1");
+			die("beta1");
 		}
-		return "Initial1";
+		return "beta1";
 	}
 }
 function xcvs($nuim){
@@ -134,8 +134,8 @@ $db->sql_query("INSERT INTO `" . $prefix . "_xcalendar` (`xcid`, `xcname`, `xcva
 massaggex("نصب تقویم نیوک با موفقیت انجام شد.");
 }
 if (extension_loaded('sockets') && function_exists('fsockopen') ){ $xmnvaa=get_latest_xcalendarverj(); } 
-if($xmnvaa==""){$xmnvaa=="Initial1";}
-if($xmnvaa=="Initial1"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xcalendar-t71002.html\">نسخه جدید ماژول Xcalendar به ورژن $xmnvaa انتشار یافت !!!</a>");}
+if($xmnvaa==""){$xmnvaa=="beta1";}
+if($xmnvaa=="beta1"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xcalendar-t71002.html\">نسخه جدید ماژول Xcalendar به ورژن $xmnvaa انتشار یافت !!!</a>");}
 ?><center><font class="title"><b>ماژول تقویم برای نیوک</b></font></center><br>
 <?php
 if(isset($xccalset) AND isset($xctheme) AND isset($xcnnews) AND isset($xcnprod) AND isset($xcncon)){
@@ -207,7 +207,7 @@ $('#container-4').tabs({ fxFade: true, fxSpeed: 'fast' });
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">نسخه نصب شده غیر فعال کننده نیوک</td>
-							<td style="width:50%;line-height:25px;direction:ltr;">Initial1</td>
+							<td style="width:50%;line-height:25px;direction:ltr;">beta1</td>
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">آخرین نسخه انتشار یافته توسط <a href="http://www.xstar.ir/">Xstar</a></td>
@@ -225,6 +225,13 @@ $('#container-4').tabs({ fxFade: true, fxSpeed: 'fast' });
 <div id="calhelp">
 <p>به نام خدا</p>
 <p>راهنمای مژول تقویم</p>
+<br><p style="font:bold 13px tahoma;">چگونه در theme.php و یا بلوک تقویم را بارگذاری کنم ؟</p>
+<p>شما میتوانید به شیوه زیر عمل کنید :</p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">
+require_once("Xcalendar.lib.php");
+echo xcstylecss(20); // td heath : 20
+echo $fxcalsf("","",2,1); // ("year", "month", "show full name day : 1 , show own alphabet name day : 2", "hidden prev and next and year , add link for month : 1 , else 2");
+</pre></p>
 <br><p style="font:bold 13px tahoma;">موقع کلیک بر روی لینک تقویم ، ارور 404 می دهد ؟</p>
 <p>
 	کد های زیر را در انتهای فایل .htaccess قرار دهید.</p>
