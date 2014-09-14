@@ -101,7 +101,7 @@ $db->sql_query("UPDATE `$dbname`.`" . $prefix . "_xsiteinfo` SET `xsname` = '$xx
 function xsins($xstag,$xsname,$xsvalue){
 global $prefix, $db, $dbname;
 $nuim=intval($nuim);
-$db->sql_query("INSERT INTO `xs`.`nuke_xsiteinfo` (
+$db->sql_query("INSERT INTO `$dbname`.`" . $prefix . "_xsiteinfo` (
 `xsid` ,
 `xstag` ,
 `xsname` ,
@@ -123,7 +123,8 @@ function massaggex($text){
 }
 function xsaform($item1,$item2,$item3,$item4,$item5){
 	global $prefix, $db, $admin_file;
-?><form action="<?php echo $admin_file; ?>.php#<?php echo $item5; ?>" method="post">
+?><div id="<?php echo $item5; ?>">
+<form action="<?php echo $admin_file; ?>.php#<?php echo $item5; ?>" method="post">
 <table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
 <tr><td style="width:250px;"><?php echo $item1; ?> (فید اصلی)</td><td><input name='xsaname' value='<?php echo $item2; ?>' class="inp-form-ltr"></td></tr>
 <tr><td><?php echo $item3; ?> (مقدار فید)</td><td><?php if($item5=="customtext"){wysiwyg_textarea('xsavalue',$item4, 'Comments', 50, 15);}else{ ?><input name='xsavalue' value='<?php echo $item4; ?>' class="inp-form-ltr"><?php } ?></td></tr>
@@ -162,7 +163,8 @@ if($item5=="customtext"){
 	<a href="<?php echo $admin_file; ?>.php?op=xsiteinfo&xnikis=dele&xsid=<?php echo $xsid ; ?>" title="حذف آیتم" class="icon-2 info-tooltip"></a>
 	<a href="<?php echo $admin_file; ?>.php?op=xsiteinfo&xnikis=edit&xsid=<?php echo $xsid ; ?>" title="ویرایش آیتم" class="icon-6 info-tooltip"></a>
 </td><?php } ?>
-</tr></table><?php
+</tr></table>
+</div><?php
 }
 function massagrex($text){
 ?>		<div id="message-red">
@@ -203,8 +205,8 @@ xsins('customtitle', 'footer-block-right', 'پیشنهادات');
 xsins('customtitle', 'product-select1', 'کتاب های درسی');
 xsins('customtext', 'successfully-send-massage', '<p style="text-align: center;"><strong>ایمیل </strong>شما با موفقیت <span style="color:#00ff00;">ارسال </span>شد !!<img alt="enlightened" height="20" src="http://localhost/Xs/includes/ckeditor/plugins/smiley/images/lightbulb.gif" title="enlightened" width="20" />(منتظر پاسخ ما باشی)</p>');
 xsins('customtext', 'error-bad-mail-massage', '<p style="text-align: center;"><span style="color:#ff0000;">ایمیل خود را درست وارد کنید <img alt="enlightened" height="20" src="http://localhost/Xs/includes/ckeditor/plugins/smiley/images/lightbulb.gif" title="enlightened" width="20" />(مانند : info@xstar.ir)</span></p>');
-xsins('customimage', 'logo', 'images/logo.png');
-xsins('customimage', 'background', 'http://www.example.com/bg.jpg');
+xsins('customimage', 'logo', 'http://www.example.com/logo2.png');
+xsins('customimage', 'background', 'images/bg1.jpg');
 xsins('informations', 'mobile-num', '00989350000000');
 xsins('informations', 'tell-num', '00981310000000');
 xsins('informations', 'first-name', 'مهدی');
@@ -220,7 +222,7 @@ xsins('customtools', 'hidden-search', '0');
 xsins('customtools', 'hidden-mapadress', '1');
 xsins('customtools', 'hidden-smartphone-switch', '0');
 xsins('customtools', 'hidden-centerblock-slider', '1');
-massaggex("نصب مود اطالاعات اضافی ، با موفقیت نصب شد.");
+massaggex("نصب مود اطالاعات بیشتر ، با موفقیت نصب شد.");
 }
 if(isset($xsatag) AND isset($xsaname) AND isset($xsavalue)){
 $xserror1check = $db->sql_numrows($db->sql_query("SELECT *
@@ -280,6 +282,7 @@ $xsinfoitem4=$xsinfoitem[3];
 </table>
 </form>
 <?php
+include("footer.php");
 die();
 }
 if(isset($xnikis) AND $xnikis=="edited" AND isset($xsaname) AND isset($xsavalue) AND isset($xsid) AND $xsid!==""){
@@ -303,6 +306,7 @@ massagrex("فید اصلی خالی است !!");
 </table>
 </form>
 <?php
+include("footer.php");
 die();
 }else{
 if($xsinfoitem2=="customtext"){
@@ -315,7 +319,7 @@ xsedi($xsid,$xsaname,$xsavalue);
 massaggex("$xsvavalue با موفقیت در $xsaname ویرایش شد.");
 }
 }
-?><center><font class="title"><b>اطلاعات اضافی</b></font></center><br>
+?><center><font class="title"><b>مود اطلاعات بیشتر</b></font></center><br>
 <link rel="stylesheet" href="includes/Ajax/jquery/jquery.tabs.css" type="text/css" media="print, projection, screen" />
 <script src="includes/Ajax/jquery/jquery.tabs.pack.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -338,78 +342,48 @@ $('#container-4').tabs({ fxFade: true, fxSpeed: 'fast' });
 	<li><a href="#xsiteinfomanag"><span>اطلاعات مود</span></a></li>
 	<li><a href="#xsiteinfohelp"><span>راهنما</span></a></li>
 </ul>
-<div id="booksmark">
 <?php
 if($xiserror==1){
 xsaform("شبکه اجتماعی",$xsaname,"لینک شما در شبکه اجتماعی",$xsavalue,"booksmark");
 }else{
 xsaform("شبکه اجتماعی","","لینک شما در شبکه اجتماعی","","booksmark");
 }
-?>
-</div>
-<div id="customtitle">
-<?php
 if($xiserror==1){
 xsaform("نام عنوان مورد نظر",$xsaname,"عنوان مورد نظر",$xsavalue,"customtitle");
 }else{
 xsaform("نام عنوان مورد نظر","","عنوان مورد نظر","","customtitle");
 }
-?>
-</div>
-<div id="customtext">
-<?php
 if($xiserror==1){
 xsaform("نام متن مورد نظر",$xsaname,"متن مورد نظر",$xsavalue,"customtext");
 }else{
 xsaform("نام متن مورد نظر","","متن مورد نظر","","customtext");
 }
-?>
-</div>
-<div id="customimage">
-<?php
 if($xiserror==1){
 xsaform("نام عکس مورد نظر",$xsaname,"لینک عکس",$xsavalue,"customimage");
 }else{
 xsaform("نام عکس مورد نظر","","لینک عکس","","customimage");
 }
-?>
-</div>
-<div id="informations">
-<?php
 if($xiserror==1){
 xsaform("عنوان مورد اطلاع",$xsaname,"اطلاعات مربوطه",$xsavalue,"informations");
 }else{
 xsaform("عنوان مورد اطلاع","","اطلاعات مربوطه","","informations");
 }
-?>
-</div>
-<div id="customposition">
-<?php
 if($xiserror==1){
 xsaform("عنوان بخش موقعیت",$xsaname,"آی دی موقعیت دلخواه",$xsavalue,"customposition");
 }else{
 xsaform("عنوان بخش موقعیت","","آی دی موقعیت دلخواه","","customposition");
 }
-?>
-</div>
-<div id="customtopic">
-<?php
 if($xiserror==1){
 xsaform("عنوان بخش موضوع",$xsaname,"آی دی موضوع دلخواه",$xsavalue,"customtopic");
 }else{
 xsaform("عنوان بخش موضوع","","آی دی موضوع دلخواه","","customtopic");
 }
-?>
-</div>
-<div id="customtools">
-<?php
 if($xiserror==1){
-xsaform("عنوان تنظیمات",$xsaname,"مقدار تنظیم برای تنظیم",$xsavalue,"customtools");
+xsaform("عنوان تنظیمات",$xsaname,"مقدار تنظیمی",$xsavalue,"customtools");
 }else{
-xsaform("عنوان تنظیمات","","مقدار تنظیم برای تنظیم","","customtools");
+xsaform("عنوان تنظیم","","مقدار تنظیمی","","customtools");
 }
 ?>
-</div>
 <div id="xsiteinfomanag">
 <div class="Table">
 <div class="Contents">
@@ -435,7 +409,34 @@ xsaform("عنوان تنظیمات","","مقدار تنظیم برای تنظی�
 				</div>
 </div>
 </div>
-<div id="xsiteinfohelp">راهما</div>
+<div id="xsiteinfohelp">
+<p>به نام خدا</p>
+<p>راهنمای استفاده از مود اطاعات اضافی برای توسعه دهندگان</p>
+<p>این مود با هدف یک دست شدن اطلاعات مورد نیاز مود ها ، ماژول ها و پوسته هایی که برای نیوک طراحی میشوند ، ساخت و توسعه یافته است. توسعه دهندگان امکان اضافه کردن اطلاعات به مدیریت با مقدار پیشفرض برای مود ها ، ماژول ها و پوسته های خود و بار گذاری آن را خواهند داشت و از این طریق مدیران سایت ها می توانند اطلاعات خود را به جای ویرایش فایل php ، از طریق مدیریت اطلاعات بیشتر تغییرات مورد نظر را اعمال کنند.</p>
+<br><p style="font:bold 13px tahoma;">تگ های به کار رفته در مود اطلاعات بیشتر :</p><br>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">booksmark // socials links
+customtitle // custom titles
+customtext // custom test
+customimage // custom images
+informations // site informations
+customposition // custom possitions for news
+customtopic // custom topic
+customtools // custom mod , modules , themes tools</pre></p>
+<br><p style="font:bold 13px tahoma;">چگونه از طریق theme.php و جاهای دیگر اطلاعات به مود اطلاعات بیشتر اضافه کنیم؟</p><br>
+<p>برای این کار به صورت زیر عمل کنید :</p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">require_once("Xsiteinfo.lib.php");
+xsitemapinsert("global xsiteinfo tags","your tag","your value"); // for example : xsitemapinsert("booksmark","facebook","https://www.facebook.com/test");</pre></p>
+<p>دقت کنید که اگه xsiteinfotag و yourtag با هم کنار هم تو دیتابیس قبلا وجود داشته باشد ، درخواست شما ثبت نخواهد شد!</p>
+<br><p style="font:bold 13px tahoma;">چگونه اطلاعات را دریافت کنیم ؟</p><br>
+<p>با توجه به مثال بالا به صورت زیر اطلاعات مورد نظر را دریافت میکنید :</p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">require_once("Xsiteinfo.lib.php");
+$xcall=xsitemapitemcall("booksmark","facebook"); // xcall is array !! [0] : id in db , [1] : xsiteinfo tag , [2] : your tag , [3] : user value</pre></p>
+<p>به طور مثال ، شما میخواهید لینک فیس بوک را نمایش دهید : </p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">if($xcall[1]=="booksmark" AND $xcall[2]=="facebook" AND $xcall[3]!==""){
+echo $xcall[3];
+}</pre></p>
+<p>که در ای حالت شما قبلا booksmark > facebook را ثبت کرده اید. اگر مدیر سایت نخواهد لینک مورد نظر نمایش یابد میتواند در ویرایش facebook مقدار را خالی بگذارد.</p>
+</div>
 </div>
 </div>
 </div><?php
