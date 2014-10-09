@@ -7,6 +7,9 @@ $module_name = basename(dirname(__FILE__));
 global $nukeurl, $prefix, $db, $xsurl, $staticcomm;
 define('INDEX_FILE', true);
 $pagetitle = "-  $xstitle";
+$tags=check_html($xsurl);
+$tags=htmlentities(trim($xsurl), ENT_QUOTES,"utf-8");
+$xsurl=mysql_escape_string($xsurl);
 function checksubxs($nuim){
 global $prefix, $db, $dbname;
 $nuim=intval($nuim);
