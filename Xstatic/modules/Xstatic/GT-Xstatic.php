@@ -1,6 +1,6 @@
 <?php
 $urlin = array(
-"'(?<!/)modules.php\?name=Xstatic&amp;xsurl=([a-zA-Z0-9+_./-اآبپتثجچحخدذرزژسشصضطظعغفقكکگلمنوهیي-]*)'",
+"'(?<!/)modules.php\?name=Xstatic&amp;xsurl=([a-zA-Z0-9-\s+_./-اآبپتثجچحخدذرزژسشصضطظعغفقكکگلمنوهیي-]*)'",
 "'(?<!/)modules.php\?name=Xstatic'",
 );
 

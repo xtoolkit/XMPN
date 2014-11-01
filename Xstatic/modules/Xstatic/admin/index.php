@@ -78,9 +78,9 @@ function get_latest_xstaticverj($mode=''){
 		return $file_info;
 	}else{
 		if(isset($mode) && $mode == "adminmain"){
-			die("RC1");
+			die("RC2");
 		}
-		return "RC1";
+		return "RC2";
 	}
 }
 function massaggex($text){
@@ -232,9 +232,9 @@ CloseAdminTable();
 include("footer.php");
 die();
 }
-$xmnvaa=="RC1";
+$xmnvaa=="RC2";
 if (extension_loaded('sockets') && function_exists('fsockopen') ){$xmnvaa=get_latest_xstaticverj();} 
-if($xmnvaa=="RC1" OR $xmnvaa==""){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xstatic-t70995.html\">نسخه جدید ماژول Xstatic به ورژن $xmnvaa انتشار یافت !!!</a>");}
+if($xmnvaa=="RC2" OR $xmnvaa==""){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xstatic-t70995.html\">نسخه جدید ماژول Xstatic به ورژن $xmnvaa انتشار یافت !!!</a>");}
 if(isset($xniniki) AND $xniniki=="emptycom"){
 $db->sql_query("TRUNCATE TABLE `" . $prefix . "_staticpages_comments`");
 massaggex("نظرات پاک سازی شد.");
@@ -430,7 +430,7 @@ LIMIT 0 , 99999");
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">نسخه نصب شده صفحات اضافی پیشرفته</td>
-							<td style="width:50%;line-height:25px;direction:ltr;">RC1</td>
+							<td style="width:50%;line-height:25px;direction:ltr;">RC2</td>
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">آخرین نسخه انتشار یافته توسط <a href="http://www.xstar.ir/">Xstar</a></td>
@@ -479,7 +479,7 @@ LIMIT 0 , 99999");
 	3- برای استفاده از صفحات به صورت گوگل تب کد های زیر را در انتهای فایل .htaccess قرار دهید.</p>
 <p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">
 #Xstatic
-RewriteRule ^Xstatic/([a-zA-Z0-9+_./-اآبپتثجچحخدذرزژسشصضطظعغفقكکگلمنوهیي-]*) modules.php?name=Xstatic&amp;xsurl=$1
+RewriteRule ^Xstatic/([a-zA-Z0-9-\s+_./-اآبپتثجچحخدذرزژسشصضطظعغفقكکگلمنوهیي-]*) modules.php?name=Xstatic&amp;xsurl=$1
 RewriteRule ^Xstatic/ modules.php?name=Xstatic</p></pre>
 <br><p>
 	4- برای بهینه بودن ماژول سیستم نظرات صفحه اضافی پیشفرض نیوک به ماژول وصل شده است. برای جلوگیری از مشکل ، حتما یک بار در تب اطلاعات ماژول ، اطلاعات نظرات را پاک سازی کنید. همچنین برای تنظیمات نظرات به تنظیمات نیوک مراجعه نمایید.</p>
