@@ -20,11 +20,11 @@ if ($row1['aadminsuper'] == 1) {
 	}
 }
 if ($row1['radminsuper'] == 1 OR $yes == 1) {
-function get_latest_xsiteinfoverj($mode=''){
+function get_latest_xmsconfigverj($mode=''){
 	if (extension_loaded('sockets') && function_exists('fsockopen') ){
 		if ($fsock = @fsockopen("www.xstar.ir", 80, $errno, $errstr, 10))
 		{
-			@fputs($fsock, "GET /xsiteinfoverj.txt HTTP/1.1\r\n");
+			@fputs($fsock, "GET /xmsconfigverj.txt HTTP/1.1\r\n");
 			@fputs($fsock, "HOST: www.xstar.ir\r\n");
 			@fputs($fsock, "Connection: close\r\n\r\n");
 
@@ -69,15 +69,15 @@ function get_latest_xsiteinfoverj($mode=''){
 		return $file_info;
 	}else{
 		if(isset($mode) && $mode == "adminmain"){
-			die("Initial1");
+			die("Beta2");
 		}
-		return "Initial1";
+		return "Beta2";
 	}
 }
 function xsivs($nuim){
 global $prefix, $db, $dbname;
 $nuim=intval($nuim);
-$result = $db->sql_query("SELECT * FROM `" . $prefix . "_xsiteinfo` WHERE `xsid` =$nuim LIMIT 0 , 1");
+$result = $db->sql_query("SELECT * FROM `" . $prefix . "_xmsconfig` WHERE `xsid` =$nuim LIMIT 0 , 1");
 	while ($row = $db->sql_fetchrow($result)) {
 	mb_internal_encoding('UTF-8');
 	$xsvalue[0] = $row['xsid'];
@@ -90,18 +90,19 @@ return $xsvalue;
 function xsudi($nuim){
 global $prefix, $db, $dbname;
 $nuim=intval($nuim);
-$db->sql_query("DELETE FROM `$dbname`.`" . $prefix . "_xsiteinfo` WHERE `" . $prefix . "_xsiteinfo`.`xsid` = $nuim");
+$db->sql_query("DELETE FROM `$dbname`.`" . $prefix . "_xmsconfig` WHERE `" . $prefix . "_xmsconfig`.`xsid` = $nuim");
 }
 function xsedi($nuim,$xxvalue,$xxxvalue){
 global $prefix, $db, $dbname;
 $nuim=intval($nuim);
-$db->sql_query("UPDATE `$dbname`.`" . $prefix . "_xsiteinfo` SET `xsname` = '$xxvalue',
-`xsvalue` = '$xxxvalue' WHERE `" . $prefix . "_xsiteinfo`.`xsid` =$nuim;");
+$db->sql_query("UPDATE `$dbname`.`" . $prefix . "_xmsconfig` SET `xsname` = '$xxvalue',
+`xsvalue` = '$xxxvalue' WHERE `" . $prefix . "_xmsconfig`.`xsid` =$nuim;");
 }
 function xsins($xstag,$xsname,$xsvalue){
 global $prefix, $db, $dbname;
 $nuim=intval($nuim);
-$db->sql_query("INSERT INTO `$dbname`.`" . $prefix . "_xsiteinfo` (
+
+$db->sql_query("INSERT INTO `$dbname`.`" . $prefix . "_xmsconfig` (
 `xsid` ,
 `xstag` ,
 `xsname` ,
@@ -127,9 +128,9 @@ function xsaform($item1,$item2,$item3,$item4,$item5){
 <form action="<?php echo $admin_file; ?>.php#<?php echo $item5; ?>" method="post">
 <table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
 <tr><td style="width:250px;"><?php echo $item1; ?> (فید اصلی)</td><td><input name='xsaname' value='<?php echo $item2; ?>' class="inp-form-ltr"></td></tr>
-<tr><td><?php echo $item3; ?> (مقدار فید)</td><td><?php if($item5=="customtext"){wysiwyg_textarea('xsavalue',$item4, 'Comments', 50, 15);}else{ ?><input name='xsavalue' value='<?php echo $item4; ?>' class="inp-form-ltr"><?php } ?></td></tr>
+<tr><td><?php echo $item3; ?> (مقدار فید)</td><td><?php if($item5=="textarea"){wysiwyg_textarea('xsavalue',$item4, 'Comments', 50, 15);}else{ ?><input name='xsavalue' value='<?php echo $item4; ?>' class="inp-form-ltr"><?php } ?></td></tr>
 <input type="hidden" name="xsatag" value="<?php echo $item5; ?>">
-<input type="hidden" name="op" value="xsiteinfo">
+<input type="hidden" name="op" value="xmsconfig">
 <tr><td><input class="form-submit" type='submit' value='ذخیره'>
 </td></tr>
 </table>
@@ -141,9 +142,9 @@ function xsaform($item1,$item2,$item3,$item4,$item5){
 <th class="table-header-repeat line-left" style="text-align:center;width:90px;"><a>امکانات</a></th>
 </tr><?php
 $result = $db->sql_query("SELECT *
-FROM `" . $prefix . "_xsiteinfo`
+FROM `" . $prefix . "_xmsconfig`
 WHERE `xstag` LIKE '$item5'
-ORDER BY `" . $prefix . "_xsiteinfo`.`xsid` DESC
+ORDER BY `" . $prefix . "_xmsconfig`.`xsid` DESC
 LIMIT 0 , 99999");
 	while ($row = $db->sql_fetchrow($result)) {
 	mb_internal_encoding('UTF-8');
@@ -151,7 +152,7 @@ LIMIT 0 , 99999");
 	$xstag = $row['xstag'];
 	$xsname = $row['xsname'];
 	$xsvalue = $row['xsvalue'];
-if($item5=="customtext"){
+if($item5=="textarea"){
 	$xsvalue = strip_tags($xsvalue);
 	$xsvalue = mb_substr($xsvalue, 0, 150) . '...';
 }
@@ -160,8 +161,8 @@ if($item5=="customtext"){
 <td align="center" width="auto"><?php echo $xsname; ?></td>
 <td align="center" width="auto"><?php echo $xsvalue; ?></td>
 <td align="center" width="90px">
-	<a href="<?php echo $admin_file; ?>.php?op=xsiteinfo&xnikis=dele&xsid=<?php echo $xsid ; ?>" title="حذف آیتم" class="icon-2 info-tooltip"></a>
-	<a href="<?php echo $admin_file; ?>.php?op=xsiteinfo&xnikis=edit&xsid=<?php echo $xsid ; ?>" title="ویرایش آیتم" class="icon-6 info-tooltip"></a>
+	<a href="<?php echo $admin_file; ?>.php?op=xmsconfig&xnikis=dele&xsid=<?php echo $xsid ; ?>" title="حذف آیتم" class="icon-2 info-tooltip"></a>
+	<a href="<?php echo $admin_file; ?>.php?op=xmsconfig&xnikis=edit&xsid=<?php echo $xsid ; ?>" title="ویرایش آیتم" class="icon-6 info-tooltip"></a>
 </td><?php } ?>
 </tr></table>
 </div><?php
@@ -176,19 +177,19 @@ function massagrex($text){
 		</div>
 <?php
 }
-function xsiteinfo() {
+function xmsconfig() {
 	global $bgcolor2, $prefix, $db, $admin_file, $dbname, $xnikis, $xsatag, $xsaname, $xsavalue, $xsid;
 include ("header.php");
 GraphicAdmin();
 OpenAdminTable();
-$xmnvaa=="Initial1";
-if (extension_loaded('sockets') && function_exists('fsockopen') ){ $xmnvaa=get_latest_xsiteinfoverj(); } 
-if($xmnvaa=="Initial1"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xsiteinfo-t70969.html\">نسخه جدید سیستم xsiteinfo به ورژن $xmnvaa انتشار یافت !!!</a>");}
+$xmnvaa=="Beta2";
+if (extension_loaded('sockets') && function_exists('fsockopen') ){ $xmnvaa=get_latest_xmsconfigverj(); } 
+if($xmnvaa=="Beta2"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xmsconfig-t71012.html\">نسخه جدید سیستم xmsconfig به ورژن $xmnvaa انتشار یافت !!!</a>");}
 $dfsdfsd = $db->sql_numrows($db->sql_query("SELECT *
-FROM `" . $prefix . "_xsiteinfo`
+FROM `" . $prefix . "_xmsconfig`
 LIMIT 0 , 3"));
 if($dfsdfsd>0){}else{
-$db->sql_query("CREATE TABLE IF NOT EXISTS `" . $prefix . "_xsiteinfo` (
+$db->sql_query("CREATE TABLE IF NOT EXISTS `" . $prefix . "_xmsconfig` (
   `xsid` int(11) NOT NULL AUTO_INCREMENT,
   `xstag` text NOT NULL,
   `xsname` text NOT NULL,
@@ -196,47 +197,48 @@ $db->sql_query("CREATE TABLE IF NOT EXISTS `" . $prefix . "_xsiteinfo` (
   PRIMARY KEY (`xsid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
 xsins('powered', 'by', 'xstar');
-xsins('booksmark', 'twitter', 'https://twitter.com/HichkasOfficial');
-xsins('booksmark', 'facebook', 'https://www.fb.com/folan');
-xsins('booksmark', 'linkedin', 'http://ir.linkedin.com/pub/number');
-xsins('booksmark', 'cloob', 'http://www.cloob.com/name/yourname');
-xsins('booksmark', 'googleplus', 'https://plus.google.com/108515851566157817652');
-xsins('customtitle', 'footer-block-right', 'پیشنهادات');
-xsins('customtitle', 'product-select1', 'کتاب های درسی');
-xsins('customtext', 'successfully-send-massage', '<p style="text-align: center;"><strong>ایمیل </strong>شما با موفقیت <span style="color:#00ff00;">ارسال </span>شد !!<img alt="enlightened" height="20" src="http://localhost/Xs/includes/ckeditor/plugins/smiley/images/lightbulb.gif" title="enlightened" width="20" />(منتظر پاسخ ما باشی)</p>');
-xsins('customtext', 'error-bad-mail-massage', '<p style="text-align: center;"><span style="color:#ff0000;">ایمیل خود را درست وارد کنید <img alt="enlightened" height="20" src="http://localhost/Xs/includes/ckeditor/plugins/smiley/images/lightbulb.gif" title="enlightened" width="20" />(مانند : info@xstar.ir)</span></p>');
-xsins('customimage', 'logo', 'http://www.example.com/logo2.png');
-xsins('customimage', 'background', 'images/bg1.jpg');
-xsins('informations', 'mobile-num', '00989350000000');
-xsins('informations', 'tell-num', '00981310000000');
-xsins('informations', 'first-name', 'مهدی');
-xsins('informations', 'last-name', 'حسین زاده');
-xsins('informations', 'company', 'xstar');
-xsins('informations', 'adress', 'ایران - گیلان - رشت - میدان مصلی - پلاک 530');
-xsins('customposition', 'footer-block-left', '3');
-xsins('customposition', 'blocks-right-top', '1');
-xsins('customposition', 'header-slider', '2');
-xsins('customtopic', 'blocks-left-tow', '5');
-xsins('customtopic', 'index-mainslider', '6');
-xsins('customtools', 'hidden-search', '0');
-xsins('customtools', 'hidden-mapadress', '1');
-xsins('customtools', 'hidden-smartphone-switch', '0');
-xsins('customtools', 'hidden-centerblock-slider', '1');
+xsins('text', 'twitter', 'https://twitter.com/HichkasOfficial');
+xsins('text', 'facebook', 'https://www.fb.com/folan');
+xsins('text', 'linkedin', 'http://ir.linkedin.com/pub/number');
+xsins('text', 'cloob', 'http://www.cloob.com/name/yourname');
+xsins('text', 'googleplus', 'https://plus.google.com/108515851566157817652');
+xsins('text', 'footer-block-right', 'پیشنهادات');
+xsins('text', 'product-select1', 'کتاب های درسی');
+xsins('textarea', 'successfully-send-massage', '<p style="text-align: center;"><strong>ایمیل </strong>شما با موفقیت <span style="color:#00ff00;">ارسال </span>شد !!<img alt="enlightened" height="20" src="http://localhost/Xs/includes/ckeditor/plugins/smiley/images/lightbulb.gif" title="enlightened" width="20" />(منتظر پاسخ ما باشی)</p>');
+xsins('textarea', 'error-bad-mail-massage', '<p style="text-align: center;"><span style="color:#ff0000;">ایمیل خود را درست وارد کنید <img alt="enlightened" height="20" src="http://localhost/Xs/includes/ckeditor/plugins/smiley/images/lightbulb.gif" title="enlightened" width="20" />(مانند : info@xstar.ir)</span></p>');
+xsins('text', 'logo', 'http://www.example.com/logo2.png');
+xsins('text', 'background', 'images/bg1.jpg');
+xsins('text', 'mobile-num', '00989350000000');
+xsins('text', 'tell-num', '00981310000000');
+xsins('text', 'first-name', 'مهدی');
+xsins('text', 'last-name', 'حسین زاده');
+xsins('text', 'company', 'xstar');
+xsins('text', 'adress', 'ایران - گیلان - رشت - میدان مصلی');
+xsins('select', 'footer-block-left', '3');
+xsins('select', 'blocks-right-top', '1');
+xsins('select', 'header-slider', '2');
+xsins('select', 'blocks-left-tow', '5');
+xsins('select', 'index-mainslider', '6');
+xsins('checkbox', 'موضوعات درون اسلایدر', '6,2,1,5');
+xsins('radius', 'hidden-search', '0');
+xsins('radius', 'hidden-mapadress', '1');
+xsins('radius', 'hidden-smartphone-switch', '0');
+xsins('radius', 'hidden-centerblock-slider', '1');
 massaggex("نصب مود اطالاعات بیشتر ، با موفقیت نصب شد.");
 }
 if(isset($xsatag) AND isset($xsaname) AND isset($xsavalue)){
 $xserror1check = $db->sql_numrows($db->sql_query("SELECT *
-FROM `" . $prefix . "_xsiteinfo`
+FROM `" . $prefix . "_xmsconfig`
 WHERE `xstag` = '$xsatag'
 AND `xsname` = '$xsaname'
 AND `xsvalue` = '$xsavalue'
 LIMIT 0 , 2"));
 $xserror2check = $db->sql_numrows($db->sql_query("SELECT *
-FROM `" . $prefix . "_xsiteinfo`
+FROM `" . $prefix . "_xmsconfig`
 WHERE `xstag` = '$xsatag'
 AND `xsname` = '$xsaname'
 LIMIT 0 , 2"));
-if($xsatag=="customtext"){
+if($xsatag=="textarea"){
 $xsvavalue = strip_tags($xsavalue);
 $xsvavalue = mb_substr($xsvavalue, 0, 150) . '...';
 }else{
@@ -273,10 +275,10 @@ $xsinfoitem4=$xsinfoitem[3];
 <form action="<?php echo $admin_file; ?>.php#<?php echo $xsinfoitem2; ?>" method="post">
 <table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
 <tr><td style="width:250px;">(فید اصلی)</td><td><input name='xsaname' value='<?php echo $xsinfoitem3; ?>' class="inp-form-ltr"></td></tr>
-<tr><td>(مقدار فید)</td><td><?php if($xsinfoitem2=="customtext"){wysiwyg_textarea('xsavalue',$xsinfoitem4, 'Comments', 50, 15);}else{ ?><input name='xsavalue' value='<?php echo $xsinfoitem4; ?>' class="inp-form-ltr"><?php } ?></td></tr>
+<tr><td>(مقدار فید)</td><td><?php if($xsinfoitem2=="textarea"){wysiwyg_textarea('xsavalue',$xsinfoitem4, 'Comments', 50, 15);}else{ ?><input name='xsavalue' value='<?php echo $xsinfoitem4; ?>' class="inp-form-ltr"><?php } ?></td></tr>
 <input type="hidden" name="xsid" value="<?php echo $xsinfoitem1; ?>">
 <input type="hidden" name="xnikis" value="edited">
-<input type="hidden" name="op" value="xsiteinfo">
+<input type="hidden" name="op" value="xmsconfig">
 <tr><td><input class="form-submit" type='submit' value='ذخیره'>
 </td></tr>
 </table>
@@ -297,10 +299,10 @@ massagrex("فید اصلی خالی است !!");
 <form action="<?php echo $admin_file; ?>.php#<?php echo $xsinfoitem2; ?>" method="post">
 <table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
 <tr><td style="width:250px;">(فید اصلی)</td><td><input name='xsaname' value='<?php echo $xsinfoitem3; ?>' class="inp-form-ltr"></td></tr>
-<tr><td>(مقدار فید)</td><td><?php if($xsinfoitem2=="customtext"){wysiwyg_textarea('xsavalue',$xsinfoitem4, 'Comments', 50, 15);}else{ ?><input name='xsavalue' value='<?php echo $xsinfoitem4; ?>' class="inp-form-ltr"><?php } ?></td></tr>
+<tr><td>(مقدار فید)</td><td><?php if($xsinfoitem2=="textarea"){wysiwyg_textarea('xsavalue',$xsinfoitem4, 'Comments', 50, 15);}else{ ?><input name='xsavalue' value='<?php echo $xsinfoitem4; ?>' class="inp-form-ltr"><?php } ?></td></tr>
 <input type="hidden" name="xsid" value="<?php echo $xsinfoitem1; ?>">
 <input type="hidden" name="xnikis" value="edited">
-<input type="hidden" name="op" value="xsiteinfo">
+<input type="hidden" name="op" value="xmsconfig">
 <tr><td><input class="form-submit" type='submit' value='ذخیره'>
 </td></tr>
 </table>
@@ -309,7 +311,7 @@ massagrex("فید اصلی خالی است !!");
 include("footer.php");
 die();
 }else{
-if($xsinfoitem2=="customtext"){
+if($xsinfoitem2=="textarea"){
 $xsvavalue = strip_tags($xsavalue);
 $xsvavalue = mb_substr($xsvavalue, 0, 150) . '...';
 }else{
@@ -319,7 +321,7 @@ xsedi($xsid,$xsaname,$xsavalue);
 massaggex("$xsvavalue با موفقیت در $xsaname ویرایش شد.");
 }
 }
-?><center><font class="title"><b>مود اطلاعات بیشتر</b></font></center><br>
+?><center><font class="title"><b>مود پیکربندی اطلاعات بیشتر</b></font></center><br>
 <link rel="stylesheet" href="includes/Ajax/jquery/jquery.tabs.css" type="text/css" media="print, projection, screen" />
 <script src="includes/Ajax/jquery/jquery.tabs.pack.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -331,60 +333,42 @@ $('#container-4').tabs({ fxFade: true, fxSpeed: 'fast' });
 <div class="Contents">
 <div id="container-4">
 <ul>
-	<li><a href="#booksmark"><span>شبکه های اجتماعی</span></a></li>
-	<li><a href="#customtitle"><span>عنوان های سفارشی</span></a></li>
-	<li><a href="#customtext"><span>متن های سفارشی</span></a></li>
-	<li><a href="#customimage"><span>عکس های سفارشی</span></a></li>
-	<li><a href="#informations"><span>اطلاعات عمومی</span></a></li>
-	<li><a href="#customposition"><span>موقعیت های سفارشی</span></a></li>
-	<li><a href="#customtopic"><span>موضوعات سفارشی</span></a></li>
-	<li><a href="#customtools"><span>تنظیمات سفارشی</span></a></li>
-	<li><a href="#xsiteinfomanag"><span>اطلاعات مود</span></a></li>
-	<li><a href="#xsiteinfohelp"><span>راهنما</span></a></li>
+	<li><a href="#text"><span>متن کوتاه</span></a></li>
+	<li><a href="#textarea"><span>متن بلند</span></a></li>
+	<li><a href="#select"><span>انتخابی از نوع select</span></a></li>
+	<li><a href="#checkbox"><span>انتخابی از نوع checkbox</span></a></li>
+	<li><a href="#radius"><span>انتخابی از نوع radius</span></a></li>
+	<li><a href="#xmsconfigmanag"><span>اطلاعات مود</span></a></li>
+	<li><a href="#xmsconfighelp"><span>راهنما</span></a></li>
 </ul>
 <?php
 if($xiserror==1){
-xsaform("شبکه اجتماعی",$xsaname,"لینک شما در شبکه اجتماعی",$xsavalue,"booksmark");
+xsaform("عنوان",$xsaname,"مقدار",$xsavalue,"text");
 }else{
-xsaform("شبکه اجتماعی","","لینک شما در شبکه اجتماعی","","booksmark");
+xsaform("عنوان","","مقدار","","text");
 }
 if($xiserror==1){
-xsaform("نام عنوان مورد نظر",$xsaname,"عنوان مورد نظر",$xsavalue,"customtitle");
+xsaform("عنوان",$xsaname,"مقدار",$xsavalue,"textarea");
 }else{
-xsaform("نام عنوان مورد نظر","","عنوان مورد نظر","","customtitle");
+xsaform("عنوان","","مقدار","","textarea");
 }
 if($xiserror==1){
-xsaform("نام متن مورد نظر",$xsaname,"متن مورد نظر",$xsavalue,"customtext");
+xsaform("عنوان",$xsaname,"مقدار",$xsavalue,"select");
 }else{
-xsaform("نام متن مورد نظر","","متن مورد نظر","","customtext");
+xsaform("عنوان","","مقدار","","select");
 }
 if($xiserror==1){
-xsaform("نام عکس مورد نظر",$xsaname,"لینک عکس",$xsavalue,"customimage");
+xsaform("عنوان",$xsaname,"مقدار",$xsavalue,"checkbox");
 }else{
-xsaform("نام عکس مورد نظر","","لینک عکس","","customimage");
+xsaform("عنوان","","مقدار","","checkbox");
 }
 if($xiserror==1){
-xsaform("عنوان مورد اطلاع",$xsaname,"اطلاعات مربوطه",$xsavalue,"informations");
+xsaform("عنوان",$xsaname,"مقدار",$xsavalue,"radius");
 }else{
-xsaform("عنوان مورد اطلاع","","اطلاعات مربوطه","","informations");
-}
-if($xiserror==1){
-xsaform("عنوان بخش موقعیت",$xsaname,"آی دی موقعیت دلخواه",$xsavalue,"customposition");
-}else{
-xsaform("عنوان بخش موقعیت","","آی دی موقعیت دلخواه","","customposition");
-}
-if($xiserror==1){
-xsaform("عنوان بخش موضوع",$xsaname,"آی دی موضوع دلخواه",$xsavalue,"customtopic");
-}else{
-xsaform("عنوان بخش موضوع","","آی دی موضوع دلخواه","","customtopic");
-}
-if($xiserror==1){
-xsaform("عنوان تنظیمات",$xsaname,"مقدار تنظیمی",$xsavalue,"customtools");
-}else{
-xsaform("عنوان تنظیم","","مقدار تنظیمی","","customtools");
+xsaform("عنوان","","مقدار","","radius");
 }
 ?>
-<div id="xsiteinfomanag">
+<div id="xmsconfigmanag">
 <div class="Table">
 <div class="Contents">
 				<div align="center">
@@ -394,48 +378,77 @@ xsaform("عنوان تنظیم","","مقدار تنظیمی","","customtools");
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">نسخه نصب شده</td>
-							<td style="width:50%;line-height:25px;direction:ltr;">Initial1</td>
+							<td style="width:50%;line-height:25px;direction:ltr;">Beta2</td>
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">آخرین نسخه انتشار یافته توسط <a href="http://www.xstar.ir/">Xstar</a></td>
-							<td style="width:50%;line-height:25px;direction:ltr;"><?php if (extension_loaded('sockets') && function_exists('fsockopen') ){ echo get_latest_xsiteinfoverj(); } ?></td>
+							<td style="width:50%;line-height:25px;direction:ltr;"><?php if (extension_loaded('sockets') && function_exists('fsockopen') ){ echo get_latest_xmsconfigverj(); } ?></td>
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">تغییرات</td>
-							<td style="width:50%;line-height:25px;direction:ltr;"><a href="http://www.phpnuke.ir/Forum/forum-f9/xsiteinfo-t70969.html">view changlogs</a></td>
+							<td style="width:50%;line-height:25px;direction:ltr;"><a href="http://www.phpnuke.ir/Forum/forum-f9/xmsconfig-t71012.html">view changlogs</a></td>
 						</tr>
 					</table>
 				</div>
 				</div>
 </div>
 </div>
-<div id="xsiteinfohelp">
+<div id="xmsconfighelp">
 <p>به نام خدا</p>
-<p>راهنمای استفاده از مود اطاعات اضافی برای توسعه دهندگان</p>
+<p>راهنمای استفاده از مود پیکربندی اطلاعات بیشتر برای توسعه دهندگان</p>
 <p>این مود با هدف یک دست شدن اطلاعات مورد نیاز مود ها ، ماژول ها و پوسته هایی که برای نیوک طراحی میشوند ، ساخت و توسعه یافته است. توسعه دهندگان امکان اضافه کردن اطلاعات به مدیریت با مقدار پیشفرض برای مود ها ، ماژول ها و پوسته های خود و بار گذاری آن را خواهند داشت و از این طریق مدیران سایت ها می توانند اطلاعات خود را به جای ویرایش فایل php ، از طریق مدیریت اطلاعات بیشتر تغییرات مورد نظر را اعمال کنند.</p>
 <br><p style="font:bold 13px tahoma;">تگ های به کار رفته در مود اطلاعات بیشتر :</p><br>
-<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">booksmark // socials links
-customtitle // custom titles
-customtext // custom test
-customimage // custom images
-informations // site informations
-customposition // custom possitions for news
-customtopic // custom topic
-customtools // custom mod , modules , themes tools</pre></p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">text // short text
+textarea // big test
+select // select option type
+checkbox // select checkbox type
+radisu // select radius type</pre></p>
 <br><p style="font:bold 13px tahoma;">چگونه از طریق theme.php و جاهای دیگر اطلاعات به مود اطلاعات بیشتر اضافه کنیم؟</p><br>
 <p>برای این کار به صورت زیر عمل کنید :</p>
-<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">require_once("Xsiteinfo.lib.php");
-xsitemapinsert("global xsiteinfo tags","your tag","your value"); // for example : xsitemapinsert("booksmark","facebook","https://www.facebook.com/test");</pre></p>
-<p>دقت کنید که اگه xsiteinfotag و yourtag با هم کنار هم تو دیتابیس قبلا وجود داشته باشد ، درخواست شما ثبت نخواهد شد!</p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">require_once("xmsconfig.lib.php");
+xsitemapinsert("global xmsconfig tags","your tag","your value"); // for example : xsitemapinsert("text","facebook","https://www.facebook.com/test");</pre></p>
+<p>دقت کنید که اگه xmsconfigtag و yourtag با هم کنار هم تو دیتابیس قبلا وجود داشته باشد ، درخواست شما ثبت نخواهد شد!</p>
 <br><p style="font:bold 13px tahoma;">چگونه اطلاعات را دریافت کنیم ؟</p><br>
 <p>با توجه به مثال بالا به صورت زیر اطلاعات مورد نظر را دریافت میکنید :</p>
-<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">require_once("Xsiteinfo.lib.php");
-$xcall=xsitemapitemcall("booksmark","facebook"); // xcall is array !! [0] : id in db , [1] : xsiteinfo tag , [2] : your tag , [3] : user value</pre></p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">require_once("xmsconfig.lib.php");
+$xcall=xsitemapitemcall("text","facebook"); // xcall is array !! [0] : id in db , [1] : xmsconfig tag , [2] : your tag , [3] : user value</pre></p>
 <p>به طور مثال ، شما میخواهید لینک فیس بوک را نمایش دهید : </p>
-<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">if($xcall[1]=="booksmark" AND $xcall[2]=="facebook" AND $xcall[3]!==""){
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">if($xcall[1]=="text" AND $xcall[2]=="facebook" AND $xcall[3]!==""){
 echo $xcall[3];
 }</pre></p>
-<p>که در ای حالت شما قبلا booksmark > facebook را ثبت کرده اید. اگر مدیر سایت نخواهد لینک مورد نظر نمایش یابد میتواند در ویرایش facebook مقدار را خالی بگذارد.</p>
+<p>که در ای حالت شما قبلا text > facebook را ثبت کرده اید. اگر مدیر سایت نخواهد لینک مورد نظر نمایش یابد میتواند در ویرایش facebook مقدار را خالی بگذارد.</p>
+<br><p style="font:bold 13px tahoma;">چگونه فرم بسازیم؟</p><br>
+<p>در نسخه جدید ماژول امکان ایجاد فرم با آیتم های مورد نظر قرار داده شده است. شما می توانید آیتم های مورد نظر خود را در هر جای قسمت مدیریت سایت فراخوانی کنید و امکان ویرایش آیتم ها را در همان مکان فراهم کنید. بدین منظور به روش زیر عمل کنید.</p>
+<p style="direction:ltr;text-align:left;"><pre style="direction:ltr;text-align:left;">require_once("xmsconfig.lib.php");
+$xmstextform=array(
+	"facebook",
+	"logo",
+	array(
+		"set"=>"index-mainslider",
+		22=>"top",
+		31=>"top mod 3"
+	),
+	array(
+		"set"=>"hidden-search",
+		0=>"بلی",
+		1=>"خیر"
+	),
+	array(
+		"set"=>"موضوعات درون اسلایدر",
+		0=>"اخبار",
+		1=>"تست",
+		2=>"بلاگ",
+		3=>"موزیک خارجی",
+		4=>"تست 2",
+		5=>"یاروو",
+		6=>"اپس"
+	),
+	"error-bad-mail-massage"
+);
+global $xmsconf,$xmlsa;
+xmsconfigform($xmstextform,$xmsconf,$xmlsa);</pre></p>
+<p>که در این صورت فرمی به صورت زیر خواهید داشت. دقت کنید آیتم های اصلی باید از قبل در سیستم قرار دادشه شده باشد. در صورت عدم وجود در فرم قرار نخواهد گرفت.</p>
+<p style="text-align:center"><img src="http://arshen.ugig.ir/upload/images/gddf99h3mjicx3yujf.png" alt=""/></p>
 </div>
 </div>
 </div>
@@ -445,8 +458,8 @@ include ("footer.php");
 }
 
 switch($op) {
-	case "xsiteinfo":
-		xsiteinfo();
+	case "xmsconfig":
+		xmsconfig();
 	break;
 }
 

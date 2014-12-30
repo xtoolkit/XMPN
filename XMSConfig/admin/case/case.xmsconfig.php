@@ -16,9 +16,10 @@ if (!defined('ADMIN_FILE')) {
 	die ("Access Denied");
 }
 
-global $admin_file;
-if (($radminsuper==1) OR ($radminuser==1) OR $fadmins == 1) {
-    adminmenu("".$admin_file.".php?op=xsiteinfo", "Xsiteinfo", "xsiteinfo.png");
+switch($op) {
+	case "xmsconfig":
+	include("admin/modules/xmsconfig.php");
+	break;
 }
 
 ?>
