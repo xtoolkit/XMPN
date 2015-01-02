@@ -78,6 +78,40 @@ if($preloader == 1){
 	}
 }
 online();
+if(isset($admin) && $admin == $_COOKIE['admin']){}else{
+function xdvs($nuim){
+global $prefix, $db, $dbname;
+$nuim=intval($nuim);
+$result = $db->sql_query("SELECT * FROM `" . $prefix . "_xdisable` WHERE `xdid` =$nuim LIMIT 0 , 1");
+	while ($row = $db->sql_fetchrow($result)) {
+	mb_internal_encoding('UTF-8');
+	$xdid = intval($row['xdid']);
+	$xdname = $row['xdname'];
+	$xdvalue = $row['xdvalue'];
+}
+return $xdvalue;
+}
+function xduemails($nuim){
+global $prefix, $db, $dbname;
+$db->sql_query("INSERT INTO `$dbname`.`" . $prefix . "_xdisable` (`xdid`, `xdname`, `xdvalue`) VALUES (NULL, 'xduemail', '$nuim');");
+}
+if(xdvs(1)==1){
+if(isset($xdemailset)){
+if (filter_var($xdemailset, FILTER_VALIDATE_EMAIL)) {
+xduemails($xdemailset);
+}else{
+$xdemailset=0;
+}
+}
+$xdtheme=xdvs(2);
+if($xdtheme=="default"){
+xdisable_theme();
+}else{
+@include("includes/xdisable/$xdtheme/xdtheme.php");
+xdisable_theme();
+}
+}
+}
 function xtscookie($name, $cookiedata, $cookietime){
 	global $sitecookies;
 	if($cookiedata == false){

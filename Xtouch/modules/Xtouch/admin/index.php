@@ -78,9 +78,9 @@ function get_latest_xtouchverj($mode=''){
 		return $file_info;
 	}else{
 		if(isset($mode) && $mode == "adminmain"){
-			die("Initial1");
+			die("Initial3");
 		}
-		return "Initial1";
+		return "Initial3";
 	}
 }
 function massagrex($text){
@@ -96,7 +96,7 @@ function massagrex($text){
 function xtouch() {
 	global $bgcolor2, $prefix, $db, $admin_file, $dbname, $sitename, $nukeurl;
 include ("header.php");
-require_once("xmsconfig.lib.php");
+require_once("XMSConfig.lib.php");
 GraphicAdmin();
 OpenAdminTable();
 $exitxmenu=0;
@@ -111,8 +111,8 @@ if($exitxmenu==0){
 massagrex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xmenu-t70968.html#p414010\">سیستم یکپارچه مدیریت منوها نصب نشده است. برای نصب ماژول تاچ ابتدا سیستم یکپارچه مدیریت منوها باید نصب شود.</a>");
 }
 if (extension_loaded('sockets') && function_exists('fsockopen') ){ $xmnvaa=get_latest_xtouchverj(); } 
-if($xmnvaa==""){$xmnvaa=="Initial1";}
-if($xmnvaa=="Initial1"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xtouch-t71295.html\">نسخه جدید ماژول Xtouch به ورژن $xmnvaa انتشار یافت !!!</a>");}
+if($xmnvaa==""){$xmnvaa=="Initial3";}
+if($xmnvaa=="Initial3"){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xtouch-t71295.html\">نسخه جدید ماژول Xtouch به ورژن $xmnvaa انتشار یافت !!!</a>");}
 if($exitxmsc==1 AND $exitxmenu==1){
 ?><center><font class="title"><b>ماژول تاچ</b></font></center><br>
 <link rel="stylesheet" href="includes/Ajax/jquery/jquery.tabs.css" type="text/css" media="print, projection, screen" />
@@ -177,8 +177,8 @@ $xmstextform=array(
 				$xmstextform[4][$themelist[$i]]=$themelist[$i];
 			}
 		}
-		$xcallt=xsitemapitemcall("select","پوسته");
-		if($xcallt[1]=="select" AND $xcallt[2]=="پوسته"){$xttheme=$xcallt[3];}
+		$xcallt=xsitemapitemcall("select","پوسته ماژول تاچ");
+		if($xcallt[1]=="select" AND $xcallt[2]=="پوسته ماژول تاچ"){$xttheme=$xcallt[3];}
 		if($xcallt[3]==""){$xttheme="default";}
 		if($xttheme=="default"){
 		$ThemeSel = get_theme();
@@ -225,7 +225,7 @@ xmsconfigform($xmstextform,$xmsconf,$xmlsa);
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">نسخه نصب شده غیر فعال کننده نیوک</td>
-							<td style="width:50%;line-height:25px;direction:ltr;">Initial1</td>
+							<td style="width:50%;line-height:25px;direction:ltr;">Initial3</td>
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">آخرین نسخه انتشار یافته توسط <a href="http://www.xstar.ir/">Xstar</a></td>
