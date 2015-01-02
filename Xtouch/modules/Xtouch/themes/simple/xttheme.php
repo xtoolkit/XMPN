@@ -98,10 +98,10 @@ global $sender_name, $gfx_chk, $sender_emaile, $subject, $message, $randnum, $ad
 				}
 				///send message with sms to admins or members
 				nuke_set_cookie("waiting","1",time()+600);
-				echo "<div style=\"text-align: center;\">"._FBMAILSENT."</div>\n";
-				echo "<div style=\"text-align: center;\">"._FBTHANKSFORCONTACT."</div>\n";
+				echo ""._FBMAILSENT."</div>\n";
+				echo ""._FBTHANKSFORCONTACT."</div>\n";
 			}else{
-				echo "<div style=\"text-align: center;\">"._WAITFORTENMIN."</div>\n";
+				echo ""._WAITFORTENMIN."\n";
 			}
 		} elseif ($send == _NO) {
 			echo "$code_err\n";
@@ -110,6 +110,90 @@ global $sender_name, $gfx_chk, $sender_emaile, $subject, $message, $randnum, $ad
 			echo "$subject_err\n";
 			echo "$message_err\n";
 		}
+}
+
+function xclean_pagination($total_rows, $entries_per_page, $current_page, $link_to){
+	global $align;
+	$total_page = ceil($total_rows / $entries_per_page);
+	$str_page  = (strpos($link_to, "?") === false) ? "?page" : "&amp;page";
+	$page = $current_page-3;
+	$upper =$current_page+3;
+
+	if ($page <=0) {
+		$page=1;
+	}
+	if ($upper >$total_page) {
+		$upper =$total_page;
+	}
+
+  	if ($upper-$page <6){
+
+		//We know that one of the page has maxed out
+		//check which one it is
+		//echo "$upper >=$maxPage<br>";
+		if ($upper >=$total_page){
+			//the upper end has maxed, put more on the front end
+			//echo "to begining<br>";
+			$dif =$total_page-$page;
+			//echo "$dif<br>";
+				if ($dif==3){
+					$page=$page-3;
+				}elseif ($dif==4){
+					$page=$page-2;
+				}elseif ($dif==5){
+					$page=$page-1;
+				}
+		}elseif ($page <1) {
+			//its the low end, add to upper end
+			//echo "to upper<br>";
+			$dif =$upper-1;
+
+			if ($dif==3){
+				$upper=$upper+3;
+			}elseif ($dif==4){
+				$upper=$upper+2;
+			}elseif ($dif==5){
+				$upper=$upper+1;
+			}
+		}
+	}	
+	if ($page <=0) {
+		$page=1;
+	}
+	if($align == "rtl"){
+	$dirrr="right";
+	}else{
+	$dirrr="left";
+	}
+ 	for($page; $page <=  $upper; $page++) {
+		if ($page == $current_page){
+			$nav .= "<span class=\"current current-page\" style=\"float:$dirrr\">$page</span>";
+		}else{
+			$nav .= "<a href=\"$link_to$str_page=$page\" style=\"float:$dirrr\">$page</a>";
+		}
+	}	  
+	if ($current_page > 1){
+		$ppage  = $current_page - 1;
+		$prev  = "<a href=\"$link_to$str_page=$ppage\" style=\"float:$dirrr\"><</a> ";
+		$first = "<a href=\"$link_to\" style=\"float:$dirrr\">«</a> ";
+	}else{
+		$prev  = "<span class=\"disabled\" style=\"float:$dirrr\"><</span> ";
+		$first = "<span class=\"disabled\" style=\"float:$dirrr\">«</span> ";
+	}	
+	if ($current_page < $total_page AND $upper <= $total_page) {
+		$page = $current_page + 1;
+		$next = " <a href=\"$link_to$str_page=$page\" style=\"float:$dirrr\">></a>";
+		$last = " <a href=\"$link_to$str_page=$total_page\" style=\"float:$dirrr\">»</a>";
+	} else {
+		$next = " <span class=\"disabled\" style=\"float:$dirrr\">></span>";
+		$last = " <span class=\"disabled\" style=\"float:$dirrr\">»</span>";
+	}	
+
+	$paginate_links = "<div align=\"center\"><table align=\"center\" border=\"0\"><tr><td align=\"center\">".$first . $prev . $nav . $next . $last."</td></tr></table></div>";
+	
+if($total_rows != '0'){
+  print $paginate_links;
+  }
 }
 function xtcheckboxcheck($value,$value2){
 $xbsds=0;
