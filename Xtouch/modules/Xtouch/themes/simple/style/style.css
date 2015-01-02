@@ -1,0 +1,100 @@
+@charset "UTF-8";
+html, body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, pre, form, p, blockquote, fieldset, input, form{margin:0;padding:0;}
+html{overflow-y:auto;overflow-x:hidden;}
+h1, h2, h3, h4, h5{line-height:normal;}
+h1{font-size:1.4em;}
+h2{font-size:1.4em;}
+h3{font-size:1.35em;}
+h4{font-size:1.2em;}
+h5{font-size:1.1em;}
+a img{border:0 none;}
+input, textarea, select, button, body{font:12px/17px "Segoe UI",Tahoma, Arial, Helvetica, sans-serif;}
+input, textarea, select, button{outline:none;border:1px solid #636464;padding:2px;}
+p{margin-bottom:0.4em;}
+hr{border:0 none;border-top:1px solid #d8d8d8;height:1px;}
+ul, li{list-style-position:outside;list-style-image:none;list-style:none;}
+ol{list-style-image:none;list-style-position:outside;list-style-type:decimal;margin-left:2.2em;}
+table{border-collapse:collapse;border-spacing:0;}
+ul li{color:#000000;}
+a{text-decoration:none;color:#fefefe;outline:none;}
+a:hover{text-decoration:none;color:#fff;}
+h1, h2, h3, h4, h5{line-height:normal;}
+body{direction:rtl;font:normal 11px "Segoe UI";background:#f1f1f1;}
+.theme{width:100%;float:right;}
+.bar{height:60px;width:100%;float:right;background:#2196f3;text-align:center;font:normal 18px/54px "Segoe UI";color:#fff;}
+.search{height:32px;width:30px;float:left;margin:14px 0 0 15px;background:url(../images/1.png) center center no-repeat;cursor:pointer;}
+.hide,.xhide{width:18px;height:20px;float:right;margin:22px 20px 0 0;}
+.hide{cursor:pointer;}
+.hide div{width:18px;height:3px;float:left;margin:0 0 3px 0;background:#fff;}
+.hide:hover div{background:#eee;}
+.hide:focus div{background:#999;}
+ul.xtouchmenu{width:100%;float:right;background:#1e88e5;display:none;}
+ul.xtouchmenu li{width:100%;float:right;}
+ul.xtouchmenu li a{width:100%;float:right;height:49px;border-bottom:1px solid #3594e8;text-indent:20px;color:#fff;font:normal 14px/44px "Segoe UI";}
+ul.xtouchmenu li a:hover{background:#3594e8}
+ul.xtouchmenu li ul li a{text-indent:50px;}
+ul.xtouchmenu li ul li ul li a{text-indent:80px;}
+ul.xtouchmenu li ul li ul li ul li a{text-indent:110px;}
+form.searchbox{display:none;margin:0;padding:0;float:right;height:50px;width:100%;background:#1e88e5;}
+form.searchbox input.text{margin:0;padding:0 0 2px 0;float:right;height:34px;width:60%;background:#f1f1f1;margin:7px 4% 0 0;border:0;text-indent:6px;font:normal 14px "Segoe UI";}
+form.searchbox input.submit{cursor:pointer;margin:0;padding:0 0 2px 0;float:left;height:36px;width:30%;background:#ff9800;color:#fff;margin:7px 0 0 4%;border:0;text-align:center}
+form.searchbox input.submit:hover{background:#ffa726}
+form.searchbox input.submit:focus{background:#fb8c00}
+ul.mainlist{float:right;width:100%;margin:20px 0;padding:0;}
+ul.mainlist li{float:right;width:100%;margin:0;padding:0;}
+ul.mainlist li a{float:right;width:90%;margin:0 5%;padding:0;height:140px;background:url(../images/2.png) left no-repeat}
+ul.mainlist li a img{float:right;width:70px;margin:32px 6px 0 0;padding:0;height:70px;background:#111;-webkit-border-radius:50px;-khtml-border-radius:50px;-moz-border-radius:50px;-o-border-radius:50px;-ms-border-radius:50px;border-radius:50px;}
+ul.mainlist li a .umlmain{float:left;width:64%;padding:0;height:139px;border-bottom:1px solid #fff;}
+ul.mainlist li a .date{float:left;width:100%;padding:0;margin-top:20px;height:30px;color:#828282;font:normal 11px/24px "Segoe UI";}
+ul.mainlist li a .xsxh4{float:right;width:90%;padding:0;color:#2196f3;font:400 20px/160% "Segoe UI";}
+ul.mainlist li a:hover{background-color:#fff;}
+div.pagination{float:right;padding: 0 0 20px 0;text-align:center;width:100%;}
+div.pagination a{padding:10px;margin:2px;background:#fff;text-decoration:none;color:#1565c0;text-align:center;font-size:12px;}
+div.pagination a:hover, div.pagination a:active{background:#2196f3;text-align:center;color:#fff;}
+div.pagination span.current{padding:10px;margin:2px;background:#2196f3;text-align:center;font-weight:bold;color:#FFF;}
+div.pagination span.disabled{padding:10px;margin:2px;background:#ddd;text-align:center;color:#1565c0;}
+.tableborder{border:1px solid #cccccc;}
+.footer{float:right;width:100%;margin-top:20px;}
+.footer .swicher{float:right;width:70%;margin:0 15%;height:30px;}
+.footer .swicher .slink{float:right;width:49%;height:26px;color:#f1f1f1;background:#ff9800;text-align:center;border:1px solid #ddd;font:600 12px/24px "Segoe UI";}
+.footer .swicher .slinks{background:#f1f1f1;color:#ff9800;}
+.footer .copyright{float:right;width:70%;margin:25px 15%;text-align:center;color:#222;font:600 12px/160% "Segoe UI";}
+.footer .copyright a{color:#2196f3;}
+.footer .copyright a:hover{color:#ff9800;}
+.post{width:100%;float:right;}
+.post .phead{width:100%;float:right;background:#80caaa;height:120px;}
+.post .phead .pcdate{text-align:center;width:100%;float:right;height:50px;font:500 12px/44px "Segoe UI";color:#e3f2fd;}
+.post .phead h2{text-align:center;width:100%;float:right;height:70px;font:600 26px/44px "Segoe UI";color:#e3f2fd;}
+.post .pimg{float:right;width:100%;height:auto;}
+.post .conta{width:100%;float:right}
+.post .conta .contax{padding:30px;color:#222;font:500 12px/180% "Segoe UI";}
+.post .conta .contax img{max-width:100% !important;}
+.post .conta .contax a{color:#2196f3}
+.post .conta .contax a:hover{color:#ff9800}
+ul.share{float:right;width:100%;height:44px;background:#ececeb;margin:0;padding:0;}
+ul.share li{float:left;width:24.9%;height:44px;margin:0;padding:0;}
+ul.share li a{float:right;width:100%;height:44px;text-align:center;color:#80caaa;font:600 12px/44px "Segoe UI";}
+ul.share li a span{height:12px;}
+.facebook span{background:url(../images/3.png) right no-repeat;padding-right:10px;}
+.twitter span{background:url(../images/4.png) right no-repeat;padding-right:16px;}
+.google span{background:url(../images/5.png) right no-repeat;padding-right:17px;}
+.email span{background:url(../images/6.png) right no-repeat;padding-right:18px;}
+.gbackdi{float:right;width:100%;margin:25px 0;text-align:center;}
+.gbackt{padding-right:15px;background:url(../images/7.png) right no-repeat;color:#7c7c7c;}
+.gbackt:hover{color:#333;}
+.xnotify{float:right;width:90%;margin:15px 5%;color:#222;text-align:center;font:600 14px/160% "Segoe UI";}
+ul.galcat{float:right;width:100%;margin:0;padding:0;}
+ul.galcat li{float:right;width:100%;margin:10px 0;padding:0;}
+ul.galcat li a{float:right;width:90%;margin:0 5%;}
+ul.galcat li a img{width:100%;}
+.feedbackbox{width:100%;float:right;margin:10px 0;}
+.feedbackbox label,p{width:100%;float:right;margin:4px 0;text-align:right;padding: 2px 0;text-indent:10px;font:600 12px/30px "Segoe UI";color:#222;}
+.feedbackbox label input,.feedbackbox label select,.feedbackbox label textarea,.feedbackbox p input{padding:0 0 4px 0;width:60%;float:left;margin:0 0 0 10px;height:32px;background:#ddd;border:0;text-indent:10px;font:600 14px/30px "Segoe UI";}
+.feedbackbox textarea{min-height:232px;font:600 12px/160% "Segoe UI";text-indent:4px;}
+.feedbackbox p{text-align:center}
+.feedbackbox p input{width:80%;margin:0 10% 10px 10%;}
+.feedbackbox .submit{cursor:pointer;float:right;width:80%;border:0;margin:0 10%;height:36px;background:#2196f3;text-align:center;color:#fff;}
+.feedbackbox .submit:hover{background:#ff9800;}
+.npbox{height:80px;width:100%;float:right;background:#e9e9e9;margin-top:30px;padding:10px 0;}
+.npbox .next{float:left;width:49%;height:70px;padding:10px 0 0 0;background:url(../images/2.png) bottom center no-repeat;font:600 14px/180% "Segoe UI";color:#2196f3;text-align:center;}
+.npbox .prev{float:right;width:49%;height:70px;padding:10px 0 0 0;background:url(../images/8.png) bottom center no-repeat;font:600 14px/180% "Segoe UI";color:#2196f3;text-align:center;}
