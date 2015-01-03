@@ -78,9 +78,9 @@ function get_latest_xstaticverj($mode=''){
 		return $file_info;
 	}else{
 		if(isset($mode) && $mode == "adminmain"){
-			die("RC2");
+			die("RC3");
 		}
-		return "RC2";
+		return "RC3";
 	}
 }
 function massaggex($text){
@@ -103,7 +103,7 @@ function massagrex($text){
 		</div>
 <?php
 }
-function xlbitems($item1,$item2,$item3,$item4,$item5,$item6){
+function xlbitems($item1,$item2,$item3,$item4,$item5,$item6,$item7){
 	global $prefix,$db,$dbname;
 ?>
 <tr><td style="width:250px">زیر صفحه : </td><td><select name="xssid" class="styledselect-select">
@@ -120,6 +120,7 @@ LIMIT 0 , 99999");
 </select></td></tr>
 <tr><td>عنوان صفحه : </td><td><input name='xstitle' value='<?php echo $item2; ?>' class="inp-form-ltr"></td></tr>
 <tr><td>تگ برای آدرس(English) : </td><td><input name='xsgt' value='<?php echo $item3; ?>' class="inp-form-ltr"></td></tr>
+<tr><td>صفحه انتقال(Redirect) : </td><td><input name='xsred' value='<?php echo $item7; ?>' class="inp-form-ltr"></td></tr>
 <tr><td>متن صفحه</td><td><?php wysiwyg_textarea('xstext',$item4, 'Artikel', 50, 15); ?></td></tr>
 <tr><td>کلمات کلیدی : </td><td><input name='xstag' value='<?php echo $item5; ?>' class="inp-form-ltr"></td></tr>
 <?php
@@ -163,12 +164,8 @@ for ($i=$checkarrayxs; $i>0; $i--) {
 $xreturne.=$xreturn[$i-1];
 $xreturne.="/";
 }
-if($gtset==0){
-$gtxsdsw="modules.php?name=Xstatic&xsurl=$xreturne";
-}else{
-$gtxsdsw="Xstatic/$xreturne";
-}
-return $gtxsdsw;
+
+return $xreturne;
 }
 function checkgxurl($nuim,$xsgt){
 global $prefix, $db, $dbname, $gtset;
@@ -193,13 +190,20 @@ $dfsdfsd=intval($dfsdfsd);
 return $dfsdfsd;
 }
 function xstatic() {
-	global $prefix, $db, $admin_file, $dbname, $sitename, $xniniki, $xnikiuid, $xsuid, $xssid, $xstitle, $xsgt, $xstext, $xstag;
+	global $prefix, $db, $admin_file, $dbname, $sitename, $xniniki, $xnikiuid, $xsuid, $xssid, $xstitle, $xsgt, $xstext, $xstag, $xsred,$gtset;
 include ("header.php");
 GraphicAdmin();
 OpenAdminTable();
 $dfsdfsd = $db->sql_numfields($db->sql_query("SELECT *
 FROM `" . $prefix . "_xstatic`"));
-if($dfsdfsd==8){}else{
+if($dfsdfsd==9){
+}elseif($dfsdfsd==8){
+$db->sql_query("ALTER TABLE `nuke_xstatic` ADD `xredirect` TEXT NOT NULL");
+massaggex("آپدیت با موفقیت انجام شد. برای ادامه <a href=\"$admin_file.php?op=xstatic\">اینجا</a> کلیک کنید.");
+CloseAdminTable();
+include("footer.php");
+die();
+}else{
 $db->sql_query("CREATE TABLE IF NOT EXISTS `".$prefix."_xstatic` (
   `xsid` int(11) NOT NULL AUTO_INCREMENT,
   `xssid` int(11) NOT NULL,
@@ -232,9 +236,9 @@ CloseAdminTable();
 include("footer.php");
 die();
 }
-$xmnvaa=="RC2";
+$xmnvaa=="RC3";
 if (extension_loaded('sockets') && function_exists('fsockopen') ){$xmnvaa=get_latest_xstaticverj();} 
-if($xmnvaa=="RC2" OR $xmnvaa==""){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xstatic-t70995.html\">نسخه جدید ماژول Xstatic به ورژن $xmnvaa انتشار یافت !!!</a>");}
+if($xmnvaa=="RC3" OR $xmnvaa==""){}else{massaggex("<a href=\"http://www.phpnuke.ir/Forum/forum-f9/xstatic-t70995.html\">نسخه جدید ماژول Xstatic به ورژن $xmnvaa انتشار یافت !!!</a>");}
 if(isset($xniniki) AND $xniniki=="emptycom"){
 $db->sql_query("TRUNCATE TABLE `" . $prefix . "_staticpages_comments`");
 massaggex("نظرات پاک سازی شد.");
@@ -263,7 +267,8 @@ LIMIT 0 , 1");
 	$exstext = $row['xstext'];
 	$exsgt = $row['xsgt'];
 	$exstag = $row['xstags'];
-	xlbitems($exssid,$exstitle,$exsgt,$exstext,$exstag,$exsid);
+	$exsred = $row['xredirect'];
+	xlbitems($exssid,$exstitle,$exsgt,$exstext,$exstag,$exsid,$exsred);
 }
 ?>
 <tr><td><input class="form-submit" type='submit' value='ارسال'>
@@ -278,25 +283,21 @@ CloseAdminTable();
 include("footer.php");
 die();
 }
-if(isset($xniniki) AND $xniniki=="edited" AND isset($xstag) AND isset($xssid) AND isset($xstitle) AND isset($xstext) AND isset($xsgt)){
-if($xstitle=="" OR $xsgt=="" OR $xstext=="" OR $xstag=="" OR (checkgxurcl($xnikiuid,$xsgt)==0 AND checkgxurl($xssid,$xsgt)>0)){
+if(isset($xniniki) AND $xniniki=="edited" AND isset($xstag) AND isset($xssid) AND isset($xstitle) AND isset($xstext) AND isset($xsgt) AND isset($xsred)){
+if($xstitle=="" OR $xsgt=="" OR $xstag=="" OR (checkgxurcl($xnikiuid,$xsgt)==0 AND checkgxurl($xssid,$xsgt)>0)){
 if(checkgxurcl($xnikiuid,$xsgt)==0 AND checkgxurl($xssid,$xsgt)>0){
 massagrex("$xsgt در ". gettibyb($xssid) ." موجود می باشد ! لطفا از تگ برای آدرس دیگری استفاده کنید.");
 }
-if($xstag==""){$xsnoptag="کلمات کلیدی";}
 if($xstitle==""){$xsnoptit="عنوان";}
-if($xstext==""){$xsnoptex="متن";}
 if($xsgt==""){$xsnopgt="تگ برای آدرس";}
 $xsnop="";
 if(isset($xsnoptit)){$xsnop .="$xsnoptit - ";}
-if(isset($xsnoptex)){$xsnop .="$xsnoptex - ";}
 if(isset($xsnopgt)){$xsnop .="$xsnopgt - ";}
-if(isset($xsnoptag)){$xsnop .="$xsnoptag";}
-if($xstitle=="" OR $xsgt=="" OR $xstext=="" OR $xstag==""){massagrex("اطلاعات ناقص است ، لطفا فید های $xsnop را پر کنید.");}
+if($xstitle=="" OR $xsgt==""){massagrex("اطلاعات ناقص است ، لطفا فید های $xsnop را پر کنید.");}
 ?><form action="<?php echo $admin_file; ?>.php" method="post">
 <table align="center" border="0" cellpadding="4" cellspacing="4" width="100%" id="id-form">
 <?php
-	xlbitems($xssid,$xstitle,$xsgt,$xstext,$xstag,$xnikiuid);
+	xlbitems($xssid,$xstitle,$xsgt,$xstext,$xstag,$xnikiuid,$xsred);
 ?>
 <tr><td><input class="form-submit" type='submit' value='ارسال'>
 </td></tr>
@@ -314,25 +315,21 @@ $db->sql_query("UPDATE `$dbname`.`" . $prefix . "_xstatic` SET `xssid` = '$xssid
 `xsgt` = '$xsgt',
 `xstitle` = '$xstitle',
 `xstext` = '$xstext',
-`xstags` = '$xstag' WHERE `" . $prefix . "_xstatic`.`xsid` =$xnikiuid;");
+`xstags` = '$xstag',
+`xredirect` = '$xsred' WHERE `" . $prefix . "_xstatic`.`xsid` =$xnikiuid;");
 massaggex("صفحه ویرایش شد.");
 }
 }
-if(isset($xniniki) AND $xniniki=="send" AND isset($xstag) AND isset($xssid) AND isset($xstitle) AND isset($xstext) AND isset($xsgt)){
-if($xstitle=="" OR $xsgt=="" OR $xstext=="" OR $xstag=="" OR checkgxurl($xssid,$xsgt)>0){
+if(isset($xniniki) AND $xniniki=="send" AND isset($xstag) AND isset($xssid) AND isset($xstitle) AND isset($xstext) AND isset($xsgt) AND isset($xsred)){
+if($xstitle=="" OR $xsgt=="" OR checkgxurl($xssid,$xsgt)>0){
 if(checkgxurl($xssid,$xsgt)>0){
 massagrex("$xsgt در ". gettibyb($xssid) ." موجود می باشد ! لطفا از تگ برای آدرس دیگری استفاده کنید.");
 }
-if($xstag==""){$xsnoptag="کلمات کلیدی";}
 if($xstitle==""){$xsnoptit="عنوان";}
-if($xstext==""){$xsnoptex="متن";}
 if($xsgt==""){$xsnopgt="تگ برای آدرس";}
-//$xsnop="$xsnoptit - $xsnoptex - $xsnopgt - $xsnoptag";
 $xsnop="";
 if(isset($xsnoptit)){$xsnop .="$xsnoptit - ";}
-if(isset($xsnoptex)){$xsnop .="$xsnoptex - ";}
 if(isset($xsnopgt)){$xsnop .="$xsnopgt - ";}
-if(isset($xsnoptag)){$xsnop .="$xsnoptag";}
 massagrex("اطلاعات ناقص است ، لطفا فید های $xsnop را پر کنید.");
 $senderror=1;
 }else{
@@ -344,10 +341,11 @@ $db->sql_query("INSERT INTO `$dbname`.`" . $prefix . "_xstatic` (
 `xstext` ,
 `xstags` ,
 `xscounter` ,
-`xscomment` 
+`xscomment`, 
+`xredirect` 
 )
 VALUES (
-NULL , '$xssid', '$xsgt', '$xstitle', '$xstext', '$xstag', '0', '0'
+NULL , '$xssid', '$xsgt', '$xstitle', '$xstext', '$xstag', '0', '0', '$xsred'
 );");
 massaggex("صفحه اضافه شد.");
 }
@@ -375,10 +373,10 @@ $('#container-4').tabs({ fxFade: true, fxSpeed: 'fast' });
 <?php
 if(isset($senderror)){
 if($senderror==1){
-xlbitems($xssid,$xstitle,$xsgt,$xstext,$xstag,'');
+xlbitems($xssid,$xstitle,$xsgt,$xstext,$xstag,'',$xsred);
 }
 }else{
-xlbitems('','','','','','');
+xlbitems('','','','','','','');
 }
 ?>
 <tr><td><input class="form-submit" type='submit' value='ارسال'>
@@ -408,9 +406,14 @@ LIMIT 0 , 99999");
 	$xscounter = intval($row['xscounter']);
 	$xstitle = $row['xstitle'];
 	$xsgt = $row['xsgt'];
+if($gtset==0){
+$gtxsdsw="modules.php?name=Xstatic&xsurl=";
+}else{
+$gtxsdsw="Xstatic/";
+}
 	?><tr>
 <td align="center" width="40"><?php echo $xsid; ?></td>
-<td align="center" width="auto"><a href="<?php echo getxslink($xsid); ?>"><?php echo $xstitle; ?></a></td>
+<td align="center" width="auto"><a href="<?php echo $gtxsdsw,getxslink($xsid); ?>"><?php echo $xstitle; ?></a></td>
 <td align="center" width="auto"><?php echo $xsgt; ?></td>
 <td align="center" width="auto"><?php echo gettibyb($xssid); ?></td>
 <td align="center" width="auto"><?php echo $xscounter; ?></td>
@@ -430,7 +433,7 @@ LIMIT 0 , 99999");
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">نسخه نصب شده صفحات اضافی پیشرفته</td>
-							<td style="width:50%;line-height:25px;direction:ltr;">RC2</td>
+							<td style="width:50%;line-height:25px;direction:ltr;">RC3</td>
 						</tr>
 						<tr>
 							<td style="width:50%;line-height:25px;">آخرین نسخه انتشار یافته توسط <a href="http://www.xstar.ir/">Xstar</a></td>

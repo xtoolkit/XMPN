@@ -282,8 +282,12 @@ LIMIT 0 , 1");
 	$xstitle = $row['xstitle'];
 	$xstext = $row['xstext'];
 	$xstags = $row['xstags'];
+	$xredirect = $row['xredirect'];
 	xscounterx($xsid);
 	$pagetitle = "-  $xstitle";
+	if($xredirect!==""){
+	Header("Location: $xredirect");
+	}
 	include("header.php");
 	OpenTable();
 	echo"<p style=\"font-weight:bold;\"><a href=\"modules.php?name=Xstatic\">صفحه ها</a> > $getxsurl</p>";
